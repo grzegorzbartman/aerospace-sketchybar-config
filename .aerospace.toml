@@ -64,9 +64,6 @@ automatically-unhide-macos-hidden-apps = false
 # Fallback value (if you omit the key): mode.main.binding = {}
 [mode.main.binding]
 
-alt-shift-left = 'exec-and-forget ~/.config/aerospace/move-workspace-left.sh'
-
-
     # All possible keys:
     # - Letters.        a, b, c, ..., z
     # - Numbers.        0, 1, 2, ..., 9
@@ -130,10 +127,8 @@ alt-shift-left = 'exec-and-forget ~/.config/aerospace/move-workspace-left.sh'
     alt-shift-5 = 'move-node-to-workspace 5'
     alt-shift-6 = 'move-node-to-workspace 6'
     
-    # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
-    alt-tab = 'workspace-back-and-forth'
-    # See: https://nikitabobko.github.io/AeroSpace/commands#move-workspace-to-monitor
-    alt-shift-tab = 'move-workspace-to-monitor --wrap-around next'
+    alt-d = 'workspace-back-and-forth'
+    alt-shift-d = 'move-workspace-to-monitor --wrap-around next'
 
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     alt-shift-semicolon = 'mode service'
