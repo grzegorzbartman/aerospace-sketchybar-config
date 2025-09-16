@@ -130,6 +130,48 @@ automatically-unhide-macos-hidden-apps = false
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     alt-shift-semicolon = 'mode service'
 
+    # Quick app launchers
+    ctrl-alt-b = '''exec-and-forget osascript -e '
+tell application "Safari"
+    make new document
+    activate
+end tell'
+'''
+    ctrl-alt-t = '''exec-and-forget osascript -e '
+tell application "iTerm"
+    create window with default profile
+    activate
+end tell'
+'''
+    ctrl-alt-c = '''exec-and-forget osascript -e '
+tell application "Cursor"
+    activate
+end tell'
+'''
+    ctrl-alt-z = '''exec-and-forget osascript -e '
+tell application "Todoist"
+    activate
+end tell'
+'''
+    ctrl-alt-n = '''exec-and-forget osascript -e '
+tell application "Notes"
+    activate
+    tell application "System Events"
+        keystroke "n" using command down
+    end tell
+end tell'
+'''
+    ctrl-alt-m = '''exec-and-forget osascript -e '
+tell application "Mimestream"
+    activate
+end tell'
+'''
+    ctrl-alt-p = '''exec-and-forget osascript -e '
+tell application "PhpStorm"
+    activate
+end tell'
+'''
+
 # 'service' binding mode declaration.
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
 [mode.service.binding]
