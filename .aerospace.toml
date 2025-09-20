@@ -128,6 +128,12 @@ automatically-unhide-macos-hidden-apps = false
     alt-shift-5 = 'move-node-to-workspace 5'
     alt-shift-6 = 'move-node-to-workspace 6'
 
+    # Go to next workspace
+    alt-right = 'workspace next'
+
+    # Go to previous workspace
+    alt-left = 'workspace prev'
+
    
     # See: https://nikitabobko.github.io/AeroSpace/commands#mode
     alt-shift-semicolon = 'mode service'
