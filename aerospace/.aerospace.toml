@@ -8,14 +8,14 @@
 # so it won't be run twice on AeroSpace restart
 after-startup-command = [
     'exec-and-forget sketchybar',
-    'exec-and-forget /bin/bash -c "pkill -f borders 2>/dev/null || true; borders active_color=0xff87CEEB inactive_color=0xff333333 width=5.0 hidpi=on &"'
+    'exec-and-forget /bin/bash -c "pkill -f borders 2>/dev/null || true; borders active_color=0xff7aa2f7 inactive_color=0xff3b4261 width=5.0 hidpi=on &"'
 ]
 
 # Notify Sketchybar about workspace change and ensure borders are running
 exec-on-workspace-change = ['/bin/bash', '-c',
     'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
     'pkill -f borders 2>/dev/null || true',
-    'borders active_color=0xff87CEEB inactive_color=0xff333333 width=5.0 hidpi=on &'
+    'borders active_color=0xff7aa2f7 inactive_color=0xff3b4261 width=5.0 hidpi=on &'
 ]
 
 # Start AeroSpace at login

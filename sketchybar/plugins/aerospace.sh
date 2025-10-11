@@ -54,10 +54,23 @@ esac
 # Get list of apps in this workspace
 apps=""
 if [[ $(aerospace list-workspaces --focused) == "$WORKSPACE" ]]; then
-# Focused workspace - highlight it
-sketchybar --set "$NAME" background.drawing=on
+# Focused workspace - TokyoNight active colors
+sketchybar --set "$NAME" \
+  background.drawing=on \
+  background.color=0xff1a1b26 \
+  background.border_color=0xff7aa2f7 \
+  background.border_width=2 \
+  icon.color=0xffc0caf5 \
+  label.color=0xffc0caf5
 else
-sketchybar --set "$NAME" background.drawing=off
+# Inactive workspace - TokyoNight inactive colors
+sketchybar --set "$NAME" \
+  background.drawing=on \
+  background.color=0xff24283b \
+  background.border_color=0xff3b4261 \
+  background.border_width=1 \
+  icon.color=0xffa9b1d6 \
+  label.color=0xffa9b1d6
 fi
 
 # Get windows in this workspace and extract unique app names
