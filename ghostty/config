@@ -1,0 +1,10 @@
+clipboard-read = allow
+clipboard-write = allow
+mouse-shift-capture = true
+cursor-click-to-move = true
+theme = TokyoNight
+font-family = "Hack Nerd Font Mono Regular"
+font-size = 14
+
+# Terminal environment
+term = xterm-256color
