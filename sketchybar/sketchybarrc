@@ -41,16 +41,17 @@ sketchybar --add event aerospace_workspace_change
 
 for sid in $(aerospace list-workspaces --all); do
   sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change \
+    --subscribe space.$sid aerospace_workspace_change front_app_switched \
     --set space.$sid \
     icon="$sid" \
     icon.padding_left=7 \
     icon.padding_right=7 \
+    label.padding_left=4 \
+    label.font="Hack Nerd Font:Bold:12.0" \
     background.color=0x40ffffff \
     background.corner_radius=5 \
     background.height=25 \
     background.drawing=off \
-    label.drawing=off \
     script="$PLUGIN_DIR/aerospace.sh $sid" \
     click_script="aerospace workspace $sid"
 done
