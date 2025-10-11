@@ -8,7 +8,7 @@
 # so it won't be run twice on AeroSpace restart
 after-startup-command = [
     'exec-and-forget sketchybar',
-    'exec-and-forget borders active_color=0xff89b4fa inactive_color=0xff45475a width=8.0 hidpi=on'
+    'exec-and-forget borders active_color=0xff3498db inactive_color=0xff34495e width=12.0 hidpi=on'
 ]
 
 # Notify Sketchybar about workspace change
