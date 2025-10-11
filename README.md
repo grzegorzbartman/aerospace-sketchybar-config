@@ -17,6 +17,7 @@ Before installation, ensure you have the following installed:
 1. **AeroSpace** - [Installation guide](https://github.com/nikitabobko/AeroSpace)
 2. **SketchyBar** - [Installation guide](https://github.com/FelixKratz/SketchyBar)
    ```bash
+   brew tap FelixKratz/formulae
    brew install sketchybar
    ```
 3. **Hack Nerd Font** - Required for icons in SketchyBar
