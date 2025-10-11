@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# This script highlights the focused AeroSpace workspace
+
+if [ "$1" = "$FOCUSED_WORKSPACE" ]; then
+    sketchybar --set $NAME background.drawing=on
+else
+    sketchybar --set $NAME background.drawing=off
+fi
+
