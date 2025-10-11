@@ -9,5 +9,6 @@ else
   ICON="󰖩"
 fi
 
-sketchybar --set "$NAME" icon="$ICON" label=""
+sketchybar --set "$NAME" icon="$ICON" label="" \
+  icon.color=0xffffffff
 
