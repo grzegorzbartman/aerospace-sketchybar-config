@@ -25,7 +25,7 @@ cd aerospace-sketchybar-config
 
 The `install.sh` script will:
 - ✓ Check if Homebrew is installed
-- ✓ Install AeroSpace, SketchyBar, JankyBorders, and Hack Nerd Font
+- ✓ Install AeroSpace, SketchyBar, JankyBorders, Ghostty, and Hack Nerd Font
 - ✓ Create symlinks for configuration files
 - ✓ Set up proper permissions
 - ✓ Start all services
@@ -51,7 +51,7 @@ If you prefer to install components manually or want more control, follow these 
 Install all required dependencies with a single command:
 
 ```bash
-brew tap FelixKratz/formulae && brew install sketchybar borders && brew install --cask font-hack-nerd-font nikitabobko/tap/aerospace
+brew tap FelixKratz/formulae && brew install sketchybar borders && brew install --cask font-hack-nerd-font ghostty nikitabobko/tap/aerospace
 ```
 
 #### Individual Components
@@ -80,7 +80,27 @@ If you prefer to install components separately or need more information:
    - Inactive windows: Dark gray border (0xff45475a)
    - Border width: 8px
 
-4. **Nerd Fonts** - Required for displaying app icons in SketchyBar
+4. **Ghostty** - Modern terminal emulator with Tokyo Night theme
+
+   Ghostty is a fast, feature-rich terminal emulator with excellent color support and theming capabilities. This configuration includes Tokyo Night theme setup.
+
+   ```bash
+   brew install --cask ghostty
+   ```
+
+   After installation, create a symlink to the Ghostty configuration:
+   ```bash
+   cd ~/.config
+   ln -s ~/projects/aerospace-sketchybar-config/ghostty ghostty
+   ```
+
+   The configuration includes:
+   - Tokyo Night theme (dark, beautiful color scheme)
+   - Hack Nerd Font for icons and symbols
+   - Proper terminal environment settings for full color support
+   - Clipboard integration and mouse support
+
+5. **Nerd Fonts** - Required for displaying app icons in SketchyBar
 
    Nerd Fonts are patched fonts that include thousands of icons from popular icon sets like Font Awesome, Material Design Icons, Devicons, and more. This configuration uses **Hack Nerd Font** to display beautiful icons for each application running in your workspaces.
 
@@ -123,6 +143,13 @@ ln -s ~/projects/aerospace-sketchybar-config/aerospace/.aerospace.toml .aerospac
 ```bash
 cd ~/.config
 ln -s ~/projects/aerospace-sketchybar-config/sketchybar sketchybar
+```
+
+##### Ghostty configuration
+
+```bash
+cd ~/.config
+ln -s ~/projects/aerospace-sketchybar-config/ghostty ghostty
 ```
 
 #### 3. Start services
@@ -188,15 +215,17 @@ aerospace-sketchybar-config/
 ├── README.md                    # This file
 ├── aerospace/
 │   └── .aerospace.toml          # AeroSpace configuration
-└── sketchybar/
-    ├── sketchybarrc             # SketchyBar main config
-    └── plugins/
-        ├── aerospace.sh         # Workspace indicators with app icons
-        ├── battery.sh           # Battery status
-        ├── clock.sh             # Date and time
-        ├── front_app.sh         # Active application name
-        ├── volume.sh            # Volume indicator
-        └── wifi.sh              # WiFi status
+├── sketchybar/
+│   ├── sketchybarrc             # SketchyBar main config
+│   └── plugins/
+│       ├── aerospace.sh         # Workspace indicators with app icons
+│       ├── battery.sh           # Battery status
+│       ├── clock.sh             # Date and time
+│       ├── front_app.sh         # Active application name
+│       ├── volume.sh            # Volume indicator
+│       └── wifi.sh              # WiFi status
+└── ghostty/
+    └── config                   # Ghostty configuration with Tokyo Night theme
 ```
 
 ## Customization
@@ -291,6 +320,32 @@ After making changes, reload SketchyBar:
 ```bash
 sketchybar --reload
 ```
+
+### Customizing Ghostty Terminal
+
+Edit `ghostty/config` to customize your terminal experience:
+
+**Available Tokyo Night themes:**
+- `TokyoNight` (default - balanced dark theme)
+- `TokyoNight Day` (lighter variant)
+- `TokyoNight Moon` (darker variant)
+- `TokyoNight Night` (darkest variant)
+- `TokyoNight Storm` (storm-themed colors)
+
+**Example configuration:**
+```ini
+theme = TokyoNight
+font-family = "Hack Nerd Font Mono Regular"
+font-size = 14
+term = xterm-256color
+```
+
+**Other customization options:**
+- Change font size: `font-size = 16`
+- Use different font: `font-family = "JetBrains Mono"`
+- Enable/disable features: `clipboard-read = allow`, `mouse-shift-capture = true`
+
+After making changes, restart Ghostty to apply the new configuration.
 
 ## Additional Settings
 
@@ -402,10 +457,26 @@ borders active_color=0xff89b4fa inactive_color=0xff45475a width=8.0 style=square
 aerospace reload-config
 ```
 
+### Ghostty colors not displaying
+If Ghostty is not showing colors properly:
+```bash
+# Check if the symlink is correct
+ls -la ~/.config/ghostty
+
+# Verify the configuration file
+cat ~/.config/ghostty/config
+
+# Test colors in a new Ghostty window
+echo -e "\033[31mRed\033[32mGreen\033[34mBlue\033[0m"
+```
+
+If colors still don't work, ensure the `term = xterm-256color` setting is in your `ghostty/config` file and restart Ghostty.
+
 ## Resources
 
 - [AeroSpace Documentation](https://nikitabobko.github.io/AeroSpace/)
 - [SketchyBar Documentation](https://felixkratz.github.io/SketchyBar/)
+- [Ghostty Documentation](https://ghostty.org/docs) - Modern terminal emulator
 - [JankyBorders](https://github.com/FelixKratz/JankyBorders) - Window borders for macOS
 - [AeroSpace + SketchyBar Integration Guide](https://nikitabobko.github.io/AeroSpace/goodness#show-aerospace-workspaces-in-sketchybar)
 - [Nerd Fonts](https://www.nerdfonts.com) - Icon fonts for developers
