@@ -220,6 +220,13 @@ start_services() {
         exit 1
     }
 
+    # Start JankyBorders
+    log INFO "Starting JankyBorders (window borders)"
+    brew services start borders || {
+        log ERROR "Failed to start JankyBorders"
+        exit 1
+    }
+
     # Reload AeroSpace config
     if command_exists aerospace; then
         log INFO "Reloading AeroSpace configuration"
