@@ -15,17 +15,17 @@ case "$1" in
 "Brave Browser") echo "󰖟" ;;
 "Code"|"Visual Studio Code"|"VSCodium") echo "󰨞" ;;
 "Cursor") echo "󰨞" ;;
-"Finder") echo "" ;;
+"Finder") echo "" ;;
 "Mail"|"Mimestream") echo "" ;;
-"Calendar") echo "" ;;
+"Calendar"|"Fantastical") echo "" ;;
 "Messages") echo "󰍦" ;;
-"Slack") echo "󰒱" ;;
+"Slack") echo "" ;;
 "Discord") echo "󰙯" ;;
 "Telegram") echo "" ;;
-"WhatsApp") echo "󰖣" ;;
-"Spotify"|"Music") echo "" ;;
-"Notes") echo "󰎚" ;;
-"Todoist") echo "" ;;
+"WhatsApp") echo "" ;;
+"Spotify"|"Music") echo "" ;;
+"Notes") echo "" ;;
+"Todoist") echo "" ;;
 "Obsidian") echo "󱓷" ;;
 "Notion") echo "󰈚" ;;
 "Preview") echo "󰋩" ;;
@@ -33,6 +33,7 @@ case "$1" in
 "Illustrator") echo "" ;;
 "Figma") echo "" ;;
 "IntelliJ IDEA"|"IntelliJ IDEA CE") echo "" ;;
+"PHPStorm") echo "" ;;
 "PyCharm"|"PyCharm CE") echo "" ;;
 "WebStorm") echo "" ;;
 "Android Studio") echo "" ;;
@@ -44,7 +45,7 @@ case "$1" in
 "IINA") echo "󰕼" ;;
 "Zoom"|"zoom.us") echo "󰍩" ;;
 "Microsoft Teams") echo "󰊻" ;;
-"System Settings"|"System Preferences") echo "" ;;
+"System Settings"|"System Preferences") echo "" ;;
 "App Store") echo "" ;;
 "Activity Monitor") echo "" ;;
 *) echo "" ;; # Default icon for unknown apps
