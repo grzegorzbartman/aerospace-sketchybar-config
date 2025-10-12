@@ -220,12 +220,8 @@ start_services() {
         exit 1
     }
 
-    # Start JankyBorders
-    log INFO "Starting JankyBorders (window borders)"
-    brew services start borders || {
-        log ERROR "Failed to start JankyBorders"
-        exit 1
-    }
+    # Note: JankyBorders is managed by AeroSpace (see .aerospace.toml)
+    # It will start automatically with AeroSpace via after-startup-command
 
     # Reload AeroSpace config
     if command_exists aerospace; then
@@ -274,7 +270,7 @@ show_welcome() {
     log INFO "Installation Summary:"
     log INFO "  ✓ AeroSpace window manager installed"
     log INFO "  ✓ SketchyBar status bar installed"
-    log INFO "  ✓ JankyBorders (window borders) installed"
+    log INFO "  ✓ JankyBorders (managed by AeroSpace) installed"
     log INFO "  ✓ Hack Nerd Font installed"
     log INFO "  ✓ Configuration files symlinked"
     log INFO "  ✓ Services started"
@@ -303,6 +299,7 @@ show_welcome() {
     log INFO "Troubleshooting:"
     log INFO "  • Reload AeroSpace:  aerospace reload-config"
     log INFO "  • Restart SketchyBar: brew services restart sketchybar"
+    log INFO "  • Restart Borders:   pkill -f borders (will auto-restart on workspace change)"
     log INFO "  • View logs:         brew services info sketchybar"
     log INFO ""
     log INFO "Documentation:"
