@@ -18,6 +18,7 @@ case "$1" in
 "Finder") echo "" ;;
 "Mail"|"Mimestream") echo "" ;;
 "Calendar"|"Fantastical") echo "" ;;
+"Home") echo "󱉑" ;;
 "Messages") echo "󰍦" ;;
 "Slack") echo "" ;;
 "Discord") echo "󰙯" ;;
