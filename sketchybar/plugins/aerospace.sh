@@ -9,7 +9,7 @@ get_app_icon() {
 case "$1" in
 "kitty"|"Alacritty"|"iTerm2"|"Terminal"|"WezTerm"|"Ghostty") echo "" ;;
 "Safari"|"safari") echo "󰀹" ;;
-"Google Chrome"|"Chrome"|"Chromium") echo "" ;;
+"Google Chrome"|"Chrome"|"Chromium") echo "" ;;
 "Firefox"|"Firefox Developer Edition") echo "" ;;
 "Arc") echo "" ;;
 "Brave Browser") echo "󰖟" ;;
