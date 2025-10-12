@@ -47,6 +47,7 @@ case "$1" in
 "Microsoft Teams") echo "󰊻" ;;
 "System Settings"|"System Preferences") echo "" ;;
 "App Store") echo "" ;;
+"TV") echo "" ;;
 "Activity Monitor") echo "" ;;
 *) echo "" ;; # Default icon for unknown apps
 esac
