@@ -1,20 +1,17 @@
 #!/bin/sh
-# CPU load average and core count for SketchyBar
+# CPU usage percentage for SketchyBar
 
-# Get number of CPU cores
-CPU_CORES=$(sysctl -n hw.ncpu)
+# Get CPU usage from top (idle percentage)
+CPU_IDLE=$(top -l 1 | grep "CPU usage" | awk '{print $7}' | sed 's/%//')
 
-# Get 1-minute load average
-LOAD_AVERAGE=$(uptime | awk -F'load averages:' '{print $2}' | awk '{print $1}' | sed 's/,//')
-
-# Round load average to 2 decimal places
-LOAD_ROUNDED=$(echo "$LOAD_AVERAGE" | awk '{printf "%.2f", $1}')
-
-# Error handling for invalid values
-if [ -z "$LOAD_ROUNDED" ] || [ -z "$CPU_CORES" ] || ! [[ "$LOAD_ROUNDED" =~ ^[0-9]+\.?[0-9]*$ ]] || ! [[ "$CPU_CORES" =~ ^[0-9]+$ ]]; then
-  CPU_DISPLAY="N/A"
+# Calculate CPU usage (100 - idle)
+if [ -n "$CPU_IDLE" ] && [[ "$CPU_IDLE" =~ ^[0-9]+\.?[0-9]*$ ]]; then
+  CPU_USAGE=$(echo "100 - $CPU_IDLE" | bc)
+  # Round to 1 decimal place
+  CPU_USAGE=$(printf "%.1f" "$CPU_USAGE")
+  CPU_DISPLAY="${CPU_USAGE}%"
 else
-  CPU_DISPLAY="${LOAD_ROUNDED}/${CPU_CORES}"
+  CPU_DISPLAY="N/A"
 fi
 
 # Update SketchyBar with error handling
