@@ -4,7 +4,7 @@
 # Configuration
 #------------------------------------------------------------------------------
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_NAME="aerospace-sketchybar-config"
+PROJECT_NAME="aerospace-config"
 
 #------------------------------------------------------------------------------
 # Functions
@@ -56,77 +56,26 @@ install_aerospace() {
     log INFO "AeroSpace installed successfully"
 }
 
-# Install SketchyBar
-install_sketchybar() {
-    log INFO "Installing SketchyBar status bar"
+# Install Ghostty
+install_ghostty() {
+    log INFO "Installing Ghostty terminal emulator"
 
-    if command_exists sketchybar; then
-        log INFO "SketchyBar is already installed: $(sketchybar --version 2>/dev/null || echo 'version unknown')"
+    if command_exists ghostty; then
+        log INFO "Ghostty is already installed"
         read -p "Do you want to reinstall? (y/N): " -n 1 -r
         echo
         if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log INFO "Skipping SketchyBar installation"
+            log INFO "Skipping Ghostty installation"
             return
         fi
     fi
 
-    # Add FelixKratz tap if not already added
-    brew tap FelixKratz/formulae 2>/dev/null || log INFO "FelixKratz/formulae tap already added"
-
-    brew install sketchybar || {
-        log ERROR "Failed to install SketchyBar"
+    brew install --cask ghostty || {
+        log ERROR "Failed to install Ghostty"
         exit 1
     }
 
-    log INFO "SketchyBar installed successfully"
-}
-
-# Install JankyBorders
-install_borders() {
-    log INFO "Installing JankyBorders (window borders)"
-
-    if command_exists borders; then
-        log INFO "JankyBorders is already installed"
-        read -p "Do you want to reinstall? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log INFO "Skipping JankyBorders installation"
-            return
-        fi
-    fi
-
-    # Tap should already be added from SketchyBar installation
-    brew tap FelixKratz/formulae 2>/dev/null || log INFO "FelixKratz/formulae tap already added"
-
-    brew install borders || {
-        log ERROR "Failed to install JankyBorders"
-        exit 1
-    }
-
-    log INFO "JankyBorders installed successfully"
-}
-
-# Install Nerd Font
-install_nerd_font() {
-    log INFO "Installing Hack Nerd Font (required for app icons)"
-
-    # Check if font is already installed
-    if ls ~/Library/Fonts/*Hack*Nerd* &>/dev/null || ls /Library/Fonts/*Hack*Nerd* &>/dev/null; then
-        log INFO "Hack Nerd Font appears to be already installed"
-        read -p "Do you want to reinstall? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log INFO "Skipping Nerd Font installation"
-            return
-        fi
-    fi
-
-    brew install --cask font-hack-nerd-font || {
-        log ERROR "Failed to install Hack Nerd Font"
-        exit 1
-    }
-
-    log INFO "Hack Nerd Font installed successfully"
+    log INFO "Ghostty installed successfully"
 }
 
 # Create symlink for AeroSpace config
@@ -158,18 +107,18 @@ setup_aerospace_config() {
     log INFO "AeroSpace config symlinked: $target -> $source"
 }
 
-# Create symlink for SketchyBar config
-setup_sketchybar_config() {
-    log INFO "Setting up SketchyBar configuration"
+# Create symlink for Ghostty config
+setup_ghostty_config() {
+    log INFO "Setting up Ghostty configuration"
 
-    local target="$HOME/.config/sketchybar"
-    local source="$SCRIPT_DIR/sketchybar"
+    local target="$HOME/.config/ghostty"
+    local source="$SCRIPT_DIR/ghostty"
 
     # Create .config directory if it doesn't exist
     mkdir -p "$HOME/.config"
 
     if [ -d "$target" ] || [ -L "$target" ]; then
-        log INFO "SketchyBar config already exists at $target"
+        log INFO "Ghostty config already exists at $target"
         read -p "Do you want to backup and replace it? (y/N): " -n 1 -r
         echo
         if [[ $REPLY =~ ^[Yy]$ ]]; then
@@ -177,53 +126,21 @@ setup_sketchybar_config() {
             mv "$target" "$backup"
             log INFO "Existing config backed up to: $backup"
         else
-            log INFO "Skipping SketchyBar config setup"
+            log INFO "Skipping Ghostty config setup"
             return
         fi
     fi
 
     ln -s "$source" "$target" || {
-        log ERROR "Failed to create symlink for SketchyBar config"
+        log ERROR "Failed to create symlink for Ghostty config"
         exit 1
     }
 
-    log INFO "SketchyBar config symlinked: $target -> $source"
+    log INFO "Ghostty config symlinked: $target -> $source"
 }
 
-# Make plugin scripts executable
-setup_plugin_permissions() {
-    log INFO "Setting executable permissions for plugin scripts"
-
-    chmod +x "$SCRIPT_DIR/sketchybar/plugins/"*.sh || {
-        log ERROR "Failed to set executable permissions"
-        exit 1
-    }
-
-    log INFO "Plugin scripts are now executable"
-}
-
-# Start services
-start_services() {
-    log INFO "Starting services"
-
-    # Stop services if already running
-    if brew services list | grep -q "sketchybar.*started"; then
-        log INFO "Stopping existing SketchyBar service"
-        brew services stop sketchybar
-        sleep 1
-    fi
-
-    # Start SketchyBar
-    log INFO "Starting SketchyBar"
-    brew services start sketchybar || {
-        log ERROR "Failed to start SketchyBar"
-        exit 1
-    }
-
-    # Note: JankyBorders is managed by AeroSpace (see .aerospace.toml)
-    # It will start automatically with AeroSpace via after-startup-command
-
-    # Reload AeroSpace config
+# Reload AeroSpace config
+reload_aerospace() {
     if command_exists aerospace; then
         log INFO "Reloading AeroSpace configuration"
         aerospace reload-config || {
@@ -231,8 +148,6 @@ start_services() {
             log INFO "You may need to restart AeroSpace manually"
         }
     fi
-
-    log INFO "Services started successfully"
 }
 
 # Optional: Configure Dock autohide
@@ -264,21 +179,17 @@ configure_dock_autohide() {
 show_welcome() {
     log INFO ""
     log INFO "╔════════════════════════════════════════════════════════════════╗"
-    log INFO "║  AeroSpace + SketchyBar Installation Complete!                ║"
+    log INFO "║  AeroSpace Installation Complete!                              ║"
     log INFO "╚════════════════════════════════════════════════════════════════╝"
     log INFO ""
     log INFO "Installation Summary:"
     log INFO "  ✓ AeroSpace window manager installed"
-    log INFO "  ✓ SketchyBar status bar installed"
-    log INFO "  ✓ JankyBorders (managed by AeroSpace) installed"
-    log INFO "  ✓ Hack Nerd Font installed"
+    log INFO "  ✓ Ghostty terminal installed"
     log INFO "  ✓ Configuration files symlinked"
-    log INFO "  ✓ Services started"
     log INFO ""
     log INFO "Next Steps:"
-    log INFO "  1. AeroSpace should now be running with window borders"
-    log INFO "  2. SketchyBar should be visible at the top of your screen"
-    log INFO "  3. Review keyboard shortcuts in README.md"
+    log INFO "  1. AeroSpace should now be running"
+    log INFO "  2. Review keyboard shortcuts in README.md"
     log INFO ""
     log INFO "Quick Start - Essential Shortcuts:"
     log INFO "  • Alt+1-9/0           - Switch to workspace 1-10"
@@ -294,18 +205,15 @@ show_welcome() {
     log INFO ""
     log INFO "Configuration Files:"
     log INFO "  • AeroSpace: ~/.aerospace.toml"
-    log INFO "  • SketchyBar: ~/.config/sketchybar/"
+    log INFO "  • Ghostty: ~/.config/ghostty/"
     log INFO ""
     log INFO "Troubleshooting:"
     log INFO "  • Reload AeroSpace:  aerospace reload-config"
-    log INFO "  • Restart SketchyBar: brew services restart sketchybar"
-    log INFO "  • Restart Borders:   pkill -f borders (will auto-restart on workspace change)"
-    log INFO "  • View logs:         brew services info sketchybar"
     log INFO ""
     log INFO "Documentation:"
     log INFO "  • Full README: $SCRIPT_DIR/README.md"
     log INFO "  • AeroSpace: https://nikitabobko.github.io/AeroSpace/"
-    log INFO "  • SketchyBar: https://felixkratz.github.io/SketchyBar/"
+    log INFO "  • Ghostty: https://ghostty.org/"
     log INFO ""
 }
 
@@ -314,14 +222,12 @@ show_welcome() {
 #------------------------------------------------------------------------------
 
 log INFO "╔════════════════════════════════════════════════════════════════╗"
-log INFO "║  AeroSpace + SketchyBar Configuration Installer                ║"
+log INFO "║  AeroSpace Configuration Installer                             ║"
 log INFO "╚════════════════════════════════════════════════════════════════╝"
 log INFO ""
 log INFO "This script will install and configure:"
 log INFO "  • AeroSpace - Tiling window manager"
-log INFO "  • SketchyBar - Status bar with workspace indicators"
-log INFO "  • JankyBorders - Visual window borders"
-log INFO "  • Hack Nerd Font - Required for app icons"
+log INFO "  • Ghostty - Modern terminal emulator"
 log INFO ""
 log INFO "Installation directory: $SCRIPT_DIR"
 log INFO ""
@@ -332,51 +238,42 @@ check_brew
 
 # Install components
 log INFO ""
-log INFO "Step 1/7: Installing dependencies"
+log INFO "Step 1/5: Installing dependencies"
 log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 install_aerospace
-install_sketchybar
-install_borders
-install_nerd_font
+install_ghostty
 
 # Setup configurations
 log INFO ""
-log INFO "Step 2/7: Setting up configuration files"
+log INFO "Step 2/5: Setting up configuration files"
 log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 setup_aerospace_config
-setup_sketchybar_config
+setup_ghostty_config
 
 log INFO ""
-log INFO "Step 3/7: Setting up plugin permissions"
+log INFO "Step 3/5: Reloading AeroSpace"
 log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-setup_plugin_permissions
+reload_aerospace
 
 log INFO ""
-log INFO "Step 4/7: Starting services"
-log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-start_services
-
-log INFO ""
-log INFO "Step 5/7: Optional Dock configuration"
+log INFO "Step 4/5: Optional Dock configuration"
 log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 configure_dock_autohide
 
 log INFO ""
-log INFO "Step 6/7: Verifying installation"
+log INFO "Step 5/5: Verifying installation"
 log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 log INFO "Checking installed components:"
 command_exists aerospace && log INFO "  ✓ AeroSpace: $(aerospace --version 2>/dev/null || echo 'installed')" || log ERROR "  ✗ AeroSpace not found"
-command_exists sketchybar && log INFO "  ✓ SketchyBar: installed" || log ERROR "  ✗ SketchyBar not found"
-command_exists borders && log INFO "  ✓ JankyBorders: installed" || log ERROR "  ✗ JankyBorders not found"
+command_exists ghostty && log INFO "  ✓ Ghostty: installed" || log ERROR "  ✗ Ghostty not found"
 [ -f "$HOME/.aerospace.toml" ] && log INFO "  ✓ AeroSpace config: linked" || log ERROR "  ✗ AeroSpace config not found"
-[ -d "$HOME/.config/sketchybar" ] && log INFO "  ✓ SketchyBar config: linked" || log ERROR "  ✗ SketchyBar config not found"
+[ -d "$HOME/.config/ghostty" ] && log INFO "  ✓ Ghostty config: linked" || log ERROR "  ✗ Ghostty config not found"
 
 log INFO ""
-log INFO "Step 7/7: Installation complete!"
+log INFO "Installation complete!"
 log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
 show_welcome
 
 log INFO "Installation finished at: $(date '+%Y-%m-%d %H:%M:%S')"
 log INFO ""
-

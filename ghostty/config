@@ -2,8 +2,11 @@ clipboard-read = allow
 clipboard-write = allow
 mouse-shift-capture = true
 cursor-click-to-move = true
-theme = TokyoNight
-font-family = "Hack Nerd Font Mono Regular"
+
+# Automatic theme switching based on macOS appearance
+theme = light:GitHub Light Default,dark:Cursor Dark
+
+font-family = "SF Mono"
 font-size = 14
 
 # Terminal environment

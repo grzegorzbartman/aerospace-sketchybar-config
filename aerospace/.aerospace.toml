@@ -3,20 +3,6 @@
 
 # You can use it to add commands that run after AeroSpace startup.
 # Available commands : https://nikitabobko.github.io/AeroSpace/commands
-# Run Sketchybar together with AeroSpace
-# sketchybar has a built-in detection of already running process,
-# so it won't be run twice on AeroSpace restart
-after-startup-command = [
-    'exec-and-forget sketchybar',
-    'exec-and-forget /bin/bash -c "pkill -f borders 2>/dev/null || true; borders active_color=0xff7aa2f7 inactive_color=0xff3b4261 width=5.0 hidpi=on &"'
-]
-
-# Notify Sketchybar about workspace change and ensure borders are running
-exec-on-workspace-change = ['/bin/bash', '-c',
-    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE',
-    'pkill -f borders 2>/dev/null || true',
-    'borders active_color=0xff7aa2f7 inactive_color=0xff3b4261 width=5.0 hidpi=on &'
-]
 
 # Start AeroSpace at login
 start-at-login = true
@@ -64,15 +50,14 @@ automatically-unhide-macos-hidden-apps = false
 #                 See:
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 [gaps]
-    inner.horizontal = 15
-    inner.vertical =   15
-    outer.left =       15
-    outer.bottom =     15
+    inner.horizontal = 5
+    inner.vertical =   5
+    outer.left =       5
+    outer.bottom =     5
     # Different top gaps for built-in display (with notch) vs external monitor
     # For built-in display with notch: use 0 to let macOS handle the notch area automatically
-    # For external monitor: 50px for SketchyBar (40px height + 10px margin)
-    outer.top = [{ monitor."Built-in" = 15 }, 55]
-    outer.right =      15
+    outer.top = [{ monitor."Built-in" = 5 }, 5]
+    outer.right =      5
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
