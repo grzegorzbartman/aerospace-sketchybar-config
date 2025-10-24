@@ -125,6 +125,18 @@ configure_apple_intelligence() {
     echo "Apple Intelligence disabled"
 }
 
+# Set wallpaper
+configure_wallpaper() {
+    echo "Setting Tokyo Night wallpaper..."
+    local wallpaper_path="$(dirname "$0")/assets/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png"
+    if [ -f "$wallpaper_path" ]; then
+        osascript -e "tell application \"System Events\" to tell every desktop to set picture to POSIX file \"$wallpaper_path\""
+        echo "Wallpaper set to Tokyo Night theme"
+    else
+        echo "Warning: Wallpaper file not found at $wallpaper_path"
+    fi
+}
+
 # Restart affected applications
 restart_applications() {
     echo "Applying changes by restarting system components..."
@@ -152,6 +164,7 @@ configure_library_visibility
 configure_dock
 configure_icloud
 configure_apple_intelligence
+configure_wallpaper
 restart_applications
 
 echo ""
