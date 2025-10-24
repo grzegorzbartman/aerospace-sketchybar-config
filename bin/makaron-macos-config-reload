@@ -1,0 +1,2 @@
+#!/bin/bash
+MAKARON_PATH="$(dirname "$(dirname "$(realpath "$0")")")" bash "$(dirname "$(dirname "$(realpath "$0")")")/install/macos_settings.sh"

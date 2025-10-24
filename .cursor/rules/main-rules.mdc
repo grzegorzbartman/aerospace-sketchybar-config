@@ -3,3 +3,5 @@ alwaysApply: true
 ---
 
 Each install script handles its own symlink management - detect and fix symlinks pointing to wrong locations automatically.
+
+Write short and concise shell scripts - only what's necessary, no unnecessary code or verbose comments.
