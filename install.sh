@@ -12,10 +12,6 @@ export PATH="$MAKARON_PATH/bin:$PATH"
 # Repository URL
 REPO_URL="https://github.com/grzegorzbartman/makaron.git"
 
-# Create directories
-mkdir -p "$MAKARON_PATH"
-mkdir -p "$(dirname "$MAKARON_INSTALL_LOG_FILE")"
-
 # Clone or update repository
 if [ -d "$MAKARON_PATH/.git" ]; then
     echo "Updating existing installation..."
@@ -23,8 +19,15 @@ if [ -d "$MAKARON_PATH/.git" ]; then
     git pull origin main
 else
     echo "Cloning repository to $MAKARON_PATH..."
+    # Remove directory if it exists but is not a git repo
+    if [ -d "$MAKARON_PATH" ]; then
+        rm -rf "$MAKARON_PATH"
+    fi
     git clone "$REPO_URL" "$MAKARON_PATH"
 fi
+
+# Create log directory after cloning
+mkdir -p "$(dirname "$MAKARON_INSTALL_LOG_FILE")"
 
 # Change to the cloned directory
 cd "$MAKARON_PATH"
