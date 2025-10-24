@@ -1,20 +1,76 @@
-# AeroSpace Configuration
+# Makaron - macOS Developer Configuration
 
-AeroSpace window manager with Ghostty terminal integration and SketchyBar status bar.
+Complete macOS development environment for PHP and Drupal developers with modern window management, terminal, and productivity tools.
 
-## Installation
+## Perfect for
+
+- **PHP Developers** - Optimized workflow for PHP development
+- **Drupal Developers** - Tailored environment for Drupal projects
+- **Web Developers** - Modern tools and efficient window management
+- **Terminal Users** - Enhanced terminal experience with Ghostty
+- **Productivity Enthusiasts** - Clean, distraction-free development setup
+
+## Requirements
+
+- macOS (tested on macOS 26)
+- Homebrew installed
+- Git
+
+## Quick Installation
+
+Install everything with one command:
+
+```bash
+curl -sL https://raw.githubusercontent.com/grzegorzbartman/makaron/main/install.sh | bash
+```
+
+This will:
+- Clone the repository to `~/.local/share/makaron`
+- Install Homebrew package manager
+- Set up modern development environment (AeroSpace, SketchyBar, Ghostty)
+- Configure system settings for optimal development workflow
+- Install developer fonts and tools
+
+## Manual Installation
+
+If you prefer manual installation:
 
 ```bash
 cd ~/projects
-git clone https://github.com/grzegorzbartman/aerospace-config.git
-cd aerospace-config
+git clone https://github.com/grzegorzbartman/makaron.git
+cd makaron
 ./install.sh
+```
+
+## Updates
+
+To update your installation, simply run the install command again:
+
+```bash
+curl -sL https://raw.githubusercontent.com/grzegorzbartman/makaron/main/install.sh | bash
+```
+
+Or manually update:
+
+```bash
+cd ~/.local/share/makaron
+git pull
 ```
 
 ## Usage
 
-- **Reload config**: `./reload.sh`
-- **macOS settings**: `./macos_settings.sh` (optional)
+### Available Commands
+
+After installation, you'll have access to these commands:
+
+- **`makaron-update`** - Update configuration to latest version
+- **`makaron-reload-aerospace-sketchybar`** - Reload all configurations
+- **`./install/macos_settings.sh`** - Apply macOS settings (optional)
+
+### Manual Commands
+
+- **Reload config**: `makaron-reload-aerospace-sketchybar`
+- **macOS settings**: `./install/macos_settings.sh` (optional)
 
 ## Keyboard Shortcuts
 
@@ -35,8 +91,24 @@ cd aerospace-config
 - `Ctrl+Alt+T` - iTerm
 - `Ctrl+Alt+P` - PhpStorm
 
+## Components
+
+This development environment includes:
+
+- **AeroSpace** - Modern tiling window manager for efficient coding workflow
+- **SketchyBar** - Clean status bar with system information and development metrics
+- **Ghostty** - Fast terminal emulator optimized for development
+- **Borders** - Visual window borders for better focus
+- **Nerd Fonts** - Developer-friendly fonts with icon support
+- **macOS Settings** - Optimized system configuration for development
+
 ## Files
 
 - `aerospace/.aerospace.toml` - AeroSpace config
 - `ghostty/config` - Ghostty terminal config
 - `sketchybar/sketchybarrc` - SketchyBar status bar config
+- `install/` - Modular installation scripts
+  - `brew.sh` - Homebrew package manager installation
+  - `ui/` - UI components (AeroSpace, SketchyBar, borders, fonts)
+  - `tools/` - Development tools (Ghostty terminal)
+  - `macos_settings.sh` - macOS system settings

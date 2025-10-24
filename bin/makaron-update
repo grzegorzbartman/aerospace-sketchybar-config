@@ -1,0 +1,26 @@
+#!/bin/bash
+
+set -e
+
+MAKARON_PATH="$HOME/.local/share/makaron"
+
+echo "Updating Makaron configuration..."
+
+if [ -d "$MAKARON_PATH/.git" ]; then
+    cd "$MAKARON_PATH"
+    echo "Pulling latest changes..."
+    git pull origin main
+    echo "Configuration updated successfully!"
+
+    # Reload configurations
+    if [ -f "$MAKARON_PATH/bin/makaron-reload-aerospace-sketchybar" ]; then
+        echo "Reloading configurations..."
+        bash "$MAKARON_PATH/bin/makaron-reload-aerospace-sketchybar"
+    fi
+else
+    echo "Makaron not found at $MAKARON_PATH"
+    echo "Please run the installation script first:"
+    echo "curl -sL https://raw.githubusercontent.com/grzegorzbartman/makaron/main/install.sh | bash"
+    exit 1
+fi
+

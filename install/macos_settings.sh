@@ -128,7 +128,7 @@ configure_apple_intelligence() {
 # Set wallpaper
 configure_wallpaper() {
     echo "Setting Tokyo Night wallpaper..."
-    local wallpaper_path="$(pwd)/assets/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png"
+    local wallpaper_path="$MAKARON_PATH/assets/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png"
     if [ -f "$wallpaper_path" ]; then
         # Method 1: AppleScript with Finder (most reliable)
         osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$wallpaper_path\"" 2>/dev/null

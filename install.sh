@@ -1,67 +1,52 @@
 #!/bin/bash
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# Exit immediately if a command exits with a non-zero status
+set -eEo pipefail
 
-# Install AeroSpace
-if ! command -v aerospace &> /dev/null; then
-    brew install --cask nikitabobko/tap/aerospace
-fi
+# Define Makaron locations
+export MAKARON_PATH="$HOME/.local/share/makaron"
+export MAKARON_INSTALL="$MAKARON_PATH/install"
+export MAKARON_INSTALL_LOG_FILE="$MAKARON_PATH/log/makaron-install.log"
+export PATH="$MAKARON_PATH/bin:$PATH"
 
-# Install Ghostty
-if ! command -v ghostty &> /dev/null; then
-    brew install --cask ghostty
-fi
+# Repository URL
+REPO_URL="https://github.com/grzegorzbartman/makaron.git"
 
-# Install SketchyBar
-if ! command -v sketchybar &> /dev/null; then
-    brew tap FelixKratz/formulae
-    brew install sketchybar
-fi
+# Create directories
+mkdir -p "$MAKARON_PATH"
+mkdir -p "$(dirname "$MAKARON_INSTALL_LOG_FILE")"
 
-# Install Nerd Fonts
-echo "Installing popular Nerd Fonts..."
-brew install --cask font-fira-code-nerd-font
-brew install --cask font-hack-nerd-font
-brew install --cask font-jetbrains-mono-nerd-font
-brew install --cask font-meslo-lg-nerd-font
-brew install --cask font-source-code-pro-nerd-font
-
-# Install borders (window border utility)
-if ! command -v borders &> /dev/null; then
-    echo "Installing borders..."
-    brew tap FelixKratz/formulae
-    brew install borders
+# Clone or update repository
+if [ -d "$MAKARON_PATH/.git" ]; then
+    echo "Updating existing installation..."
+    cd "$MAKARON_PATH"
+    git pull origin main
 else
-    echo "Borders already installed"
+    echo "Cloning repository to $MAKARON_PATH..."
+    git clone "$REPO_URL" "$MAKARON_PATH"
 fi
 
-# Setup AeroSpace config
-if [ ! -L "$HOME/.aerospace.toml" ] && [ ! -f "$HOME/.aerospace.toml" ]; then
-    ln -s "$SCRIPT_DIR/aerospace/.aerospace.toml" "$HOME/.aerospace.toml"
-    echo "AeroSpace config linked successfully"
+# Change to the cloned directory
+cd "$MAKARON_PATH"
+
+# Run all installations
+echo "Starting installation process..."
+bash "$MAKARON_PATH/install/all.sh"
+
+# Add bin directory to PATH
+echo "Setting up PATH..."
+if ! echo "$PATH" | grep -q "$MAKARON_PATH/bin"; then
+    echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.zshrc"
+    echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.bashrc"
+    echo "Added $MAKARON_PATH/bin to PATH in shell config files"
 else
-    echo "AeroSpace config already exists, skipping..."
+    echo "PATH already configured"
 fi
 
-# Setup Ghostty config
-mkdir -p "$HOME/.config"
-if [ ! -L "$HOME/.config/ghostty" ] && [ ! -d "$HOME/.config/ghostty" ]; then
-    ln -s "$SCRIPT_DIR/ghostty" "$HOME/.config/ghostty"
-    echo "Ghostty config linked successfully"
-else
-    echo "Ghostty config already exists, skipping..."
-fi
-
-# Setup SketchyBar config
-if [ ! -L "$HOME/.config/sketchybar" ] && [ ! -d "$HOME/.config/sketchybar" ]; then
-    ln -s "$SCRIPT_DIR/sketchybar" "$HOME/.config/sketchybar"
-    echo "SketchyBar config linked successfully"
-else
-    echo "SketchyBar config already exists, skipping..."
-fi
-
-# Start SketchyBar service
-brew services start sketchybar
-
-# Reload configurations
-./reload.sh
+echo "Installation completed successfully!"
+echo ""
+echo "Available commands:"
+echo "  makaron-update                      - Update the configuration"
+echo "  makaron-reload-aerospace-sketchybar - Reload all configurations"
+echo ""
+echo "Note: You may need to restart your terminal or run 'source ~/.zshrc' to use the new commands."
