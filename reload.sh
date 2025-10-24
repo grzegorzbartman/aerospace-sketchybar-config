@@ -1,5 +1,21 @@
 #!/bin/bash
 # Quick reload script for AeroSpace configuration
+
+# Check if AeroSpace is running, start if not
+if ! pgrep -f "AeroSpace" > /dev/null; then
+    echo "AeroSpace not running, starting..."
+    open -a AeroSpace
+    sleep 2  # Give it time to start
+fi
+
+# Check if SketchyBar is running, start if not
+if ! pgrep -f "sketchybar" > /dev/null; then
+    echo "SketchyBar not running, starting..."
+    brew services start sketchybar
+    sleep 2  # Give it time to start
+fi
+
+# Now reload the configurations
 aerospace reload-config
 sketchybar --reload
 
