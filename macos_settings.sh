@@ -128,16 +128,17 @@ configure_apple_intelligence() {
 # Set wallpaper
 configure_wallpaper() {
     echo "Setting Tokyo Night wallpaper..."
-    local wallpaper_path="$(dirname "$0")/assets/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png"
+    local wallpaper_path="$(pwd)/assets/1-scenery-pink-lakeside-sunset-lake-landscape-scenic-panorama-7680x3215-144.png"
     if [ -f "$wallpaper_path" ]; then
-        # Try multiple methods to set wallpaper
-        osascript -e "tell application \"System Events\" to tell every desktop to set picture to POSIX file \"$wallpaper_path\"" 2>/dev/null
-        osascript -e "tell application \"System Events\" to tell every desktop to set picture to \"$wallpaper_path\"" 2>/dev/null
+        # Method 1: AppleScript with Finder (most reliable)
         osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$wallpaper_path\"" 2>/dev/null
 
-        # Direct database method as fallback
+        # Method 2: Database method as fallback
         sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "UPDATE data SET value = '$wallpaper_path';" 2>/dev/null
         killall Dock 2>/dev/null
+
+        # Method 3: System Events as additional fallback
+        osascript -e "tell application \"System Events\" to tell every desktop to set picture to POSIX file \"$wallpaper_path\"" 2>/dev/null
 
         echo "Wallpaper set to Tokyo Night theme"
     else
