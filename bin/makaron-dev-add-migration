@@ -9,8 +9,6 @@ migration_file="$HOME/.local/share/makaron/migrations/$(date +%s).sh"
 # Create the migration file
 touch "$migration_file"
 
-# Make it executable
-chmod +x "$migration_file"
 
 # Add basic template
 cat > "$migration_file" << 'EOF'
