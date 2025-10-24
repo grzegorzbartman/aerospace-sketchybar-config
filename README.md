@@ -65,6 +65,7 @@ After installation, you'll have access to these commands:
 
 - **`makaron-update`** - Update configuration to latest version
 - **`makaron-reload-aerospace-sketchybar`** - Reload all configurations
+- **`makaron-reinstall`** - Complete reinstall from scratch
 - **`makaron-migrate`** - Run pending migrations
 - **`makaron-migration-status`** - Show migration status
 - **`makaron-dev-add-migration`** - Create new migration (development)
@@ -74,6 +75,14 @@ After installation, you'll have access to these commands:
 
 - **Reload config**: `makaron-reload-aerospace-sketchybar`
 - **macOS settings**: `./install/macos_settings.sh` (optional)
+
+### Troubleshooting
+
+If you encounter issues with your installation:
+
+- **Complete reinstall**: `makaron-reinstall` - Removes everything and reinstalls from scratch
+- **Check migration status**: `makaron-migration-status` - See which migrations have been applied
+- **Manual migration**: `makaron-migrate` - Run pending migrations manually
 
 ## Keyboard Shortcuts
 

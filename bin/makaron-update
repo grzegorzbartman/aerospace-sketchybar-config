@@ -8,8 +8,31 @@ echo "Updating Makaron configuration..."
 
 if [ -d "$MAKARON_PATH/.git" ]; then
     cd "$MAKARON_PATH"
-    echo "Pulling latest changes..."
-    git pull origin main
+
+    # Check for local changes
+    if ! git diff --quiet || ! git diff --cached --quiet; then
+        echo "❌ Local changes detected in makaron repository!"
+        echo ""
+        echo "You have uncommitted changes that would be overwritten by the update."
+        echo "Please resolve this manually:"
+        echo ""
+        echo "1. Save your changes:"
+        echo "   cd $MAKARON_PATH"
+        echo "   git stash push -m 'backup before update'"
+        echo ""
+        echo "2. Then run update again:"
+        echo "   makaron-update"
+        echo ""
+        echo "3. Restore your changes if needed:"
+        echo "   cd $MAKARON_PATH"
+        echo "   git stash pop"
+        echo ""
+        exit 1
+    fi
+
+    echo "Fetching latest changes..."
+    git fetch origin main
+    git reset --hard origin/main
     echo "Configuration updated successfully!"
 
     # Run migrations
@@ -23,6 +46,8 @@ if [ -d "$MAKARON_PATH/.git" ]; then
         echo "Reloading configurations..."
         bash "$MAKARON_PATH/bin/makaron-reload-aerospace-sketchybar"
     fi
+
+    echo "Update completed successfully!"
 else
     echo "Makaron not found at $MAKARON_PATH"
     echo "Please run the installation script first:"

@@ -1,0 +1,66 @@
+#!/bin/bash
+
+# Makaron Reinstall Script
+# Completely removes local installation and reinstalls from scratch
+
+set -e
+
+MAKARON_PATH="$HOME/.local/share/makaron"
+REPO_URL="https://github.com/grzegorzbartman/makaron.git"
+
+echo "🔄 Makaron Reinstall"
+echo "==================="
+echo ""
+
+# Confirm with user
+echo "This will completely remove your current makaron installation and reinstall from scratch."
+echo "All local changes will be lost!"
+echo ""
+read -p "Are you sure you want to continue? (y/N): " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Reinstall cancelled."
+    exit 0
+fi
+
+echo ""
+echo "🗑️  Removing existing installation..."
+
+# Stop any running services first
+if command -v sketchybar &> /dev/null; then
+    echo "Stopping SketchyBar..."
+    brew services stop sketchybar 2>/dev/null || true
+fi
+
+# Remove the entire makaron directory
+if [ -d "$MAKARON_PATH" ]; then
+    echo "Removing $MAKARON_PATH..."
+    rm -rf "$MAKARON_PATH"
+fi
+
+# Remove symlinks
+echo "Removing symlinks..."
+rm -f "$HOME/.aerospace.toml"
+rm -f "$HOME/.config/sketchybar"
+rm -f "$HOME/.config/ghostty"
+
+echo "✅ Cleanup completed!"
+echo ""
+
+echo "📥 Cloning fresh repository..."
+git clone "$REPO_URL" "$MAKARON_PATH"
+
+echo "🔧 Running full installation..."
+cd "$MAKARON_PATH"
+bash "$MAKARON_PATH/install/all.sh"
+
+echo ""
+echo "✅ Makaron reinstalled successfully!"
+echo ""
+echo "Available commands:"
+echo "  makaron-update                      - Update the configuration"
+echo "  makaron-reload-aerospace-sketchybar - Reload all configurations"
+echo "  makaron-migrate                    - Run pending migrations"
+echo "  makaron-migration-status           - Show migration status"
+echo ""
+echo "Note: You may need to restart your terminal or run 'source ~/.zshrc' to use the new commands."
