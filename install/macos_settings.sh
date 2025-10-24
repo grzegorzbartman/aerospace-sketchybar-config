@@ -7,9 +7,9 @@
 
 # Keyboard settings
 configure_keyboard() {
-    echo "Setting faster keyboard repeat rates..."
-    defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
-    defaults write -g KeyRepeat -int 1         # normal minimum is 2 (30 ms)
+    echo "Setting comfortable keyboard repeat rates..."
+    defaults write -g InitialKeyRepeat -int 25 # normal minimum is 15 (225 ms) - slower initial delay
+    defaults write -g KeyRepeat -int 3         # normal minimum is 2 (30 ms) - slower repeat rate
     echo "Keyboard repeat rates configured"
 }
 
