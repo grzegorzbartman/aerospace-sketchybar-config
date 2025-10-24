@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Makaron Development Migration Creator
+# Creates a new migration file with current timestamp
+
+cd ~/.local/share/makaron
+migration_file="$HOME/.local/share/makaron/migrations/$(date +%s).sh"
+
+# Create the migration file
+touch "$migration_file"
+
+# Make it executable
+chmod +x "$migration_file"
+
+# Add basic template
+cat > "$migration_file" << 'EOF'
+#!/bin/bash
+
+# Migration: [DESCRIPTION]
+# Date: $(date)
+
+set -e
+
+error_exit() {
+  echo -e "\033[31mERROR: Migration failed! Manual intervention required.\033[0m" >&2
+  exit 1
+}
+
+trap error_exit ERR
+
+echo "Running migration: [DESCRIPTION]"
+
+# Add your migration logic here
+
+echo "Migration completed successfully"
+EOF
+
+echo "Created migration file: $migration_file"
+echo "Opening in editor..."
+
+# Try to open with preferred editor
+if command -v nvim &> /dev/null; then
+    nvim "$migration_file"
+elif command -v vim &> /dev/null; then
+    vim "$migration_file"
+elif command -v nano &> /dev/null; then
+    nano "$migration_file"
+else
+    echo "Please edit the migration file manually: $migration_file"
+fi

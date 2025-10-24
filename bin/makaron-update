@@ -12,6 +12,12 @@ if [ -d "$MAKARON_PATH/.git" ]; then
     git pull origin main
     echo "Configuration updated successfully!"
 
+    # Run migrations
+    if [ -f "$MAKARON_PATH/bin/makaron-migrate" ]; then
+        echo "Running migrations..."
+        bash "$MAKARON_PATH/bin/makaron-migrate"
+    fi
+
     # Reload configurations
     if [ -f "$MAKARON_PATH/bin/makaron-reload-aerospace-sketchybar" ]; then
         echo "Reloading configurations..."

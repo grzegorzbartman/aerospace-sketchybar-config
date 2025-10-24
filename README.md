@@ -65,6 +65,9 @@ After installation, you'll have access to these commands:
 
 - **`makaron-update`** - Update configuration to latest version
 - **`makaron-reload-aerospace-sketchybar`** - Reload all configurations
+- **`makaron-migrate`** - Run pending migrations
+- **`makaron-migration-status`** - Show migration status
+- **`makaron-dev-add-migration`** - Create new migration (development)
 - **`./install/macos_settings.sh`** - Apply macOS settings (optional)
 
 ### Manual Commands
@@ -104,11 +107,54 @@ This development environment includes:
 
 ## Files
 
-- `aerospace/.aerospace.toml` - AeroSpace config
-- `ghostty/config` - Ghostty terminal config
-- `sketchybar/sketchybarrc` - SketchyBar status bar config
+- `configs/aerospace/.aerospace.toml` - AeroSpace config
+- `configs/ghostty/config` - Ghostty terminal config
+- `configs/sketchybar/sketchybarrc` - SketchyBar status bar config
 - `install/` - Modular installation scripts
   - `brew.sh` - Homebrew package manager installation
   - `ui/` - UI components (AeroSpace, SketchyBar, borders, fonts)
   - `tools/` - Development tools (Ghostty terminal)
   - `macos_settings.sh` - macOS system settings
+  - `migrations.sh` - Migration system initialization
+- `migrations/` - Database-style migrations for configuration updates
+- `bin/` - Executable scripts
+  - `makaron-migrate` - Run pending migrations
+  - `makaron-migration-status` - Show migration status
+  - `makaron-dev-add-migration` - Create new migration (development)
+
+## Migration System
+
+Makaron includes a migration system similar to database migrations (like Rails or Drupal). This allows for safe, incremental updates to your configuration.
+
+### How it works
+
+- Migrations are timestamped shell scripts in the `migrations/` directory
+- Each migration runs only once per installation
+- State is tracked in `~/.local/state/makaron/migrations/`
+- Migrations run automatically during `makaron-update`
+
+### Creating Migrations
+
+For development, use the helper script:
+
+```bash
+makaron-dev-add-migration
+```
+
+This creates a new migration file with the current timestamp and opens it in your editor.
+
+### Migration Status
+
+Check which migrations have been applied:
+
+```bash
+makaron-migration-status
+```
+
+### Manual Migration
+
+Run pending migrations manually:
+
+```bash
+makaron-migrate
+```
