@@ -36,15 +36,37 @@ cd "$MAKARON_PATH"
 echo "Starting installation process..."
 bash "$MAKARON_PATH/install/all.sh"
 
+# Fix existing symlinks to point to new location
+echo "Fixing existing symlinks..."
+if [ -L "$HOME/.aerospace.toml" ]; then
+    rm "$HOME/.aerospace.toml"
+    ln -s "$MAKARON_PATH/aerospace/.aerospace.toml" "$HOME/.aerospace.toml"
+fi
+
+if [ -L "$HOME/.config/ghostty" ]; then
+    rm "$HOME/.config/ghostty"
+    ln -s "$MAKARON_PATH/ghostty" "$HOME/.config/ghostty"
+fi
+
+if [ -L "$HOME/.config/sketchybar" ]; then
+    rm "$HOME/.config/sketchybar"
+    ln -s "$MAKARON_PATH/sketchybar" "$HOME/.config/sketchybar"
+fi
+
 # Add bin directory to PATH
 echo "Setting up PATH..."
-if ! echo "$PATH" | grep -q "$MAKARON_PATH/bin"; then
-    echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.zshrc"
-    echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.bashrc"
-    echo "Added $MAKARON_PATH/bin to PATH in shell config files"
-else
-    echo "PATH already configured"
-fi
+# Remove old PATH entries first
+sed -i '' '/makaron\/bin/d' "$HOME/.zshrc" 2>/dev/null || true
+sed -i '' '/makaron\/bin/d' "$HOME/.bashrc" 2>/dev/null || true
+
+# Add new PATH entry
+echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.zshrc"
+echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.bashrc"
+
+# Add to current session
+export PATH="$HOME/.local/share/makaron/bin:$PATH"
+
+echo "Added $MAKARON_PATH/bin to PATH in shell config files"
 
 echo "Installation completed successfully!"
 echo ""
