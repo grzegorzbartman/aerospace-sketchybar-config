@@ -7,6 +7,11 @@
 # Start AeroSpace at login
 start-at-login = true
 
+# Commands to run after AeroSpace startup
+after-startup-command = [
+  'exec-and-forget borders active_color=0xff7aa2f7 inactive_color=0xff3b4261 width=2.0'
+]
+
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
@@ -56,7 +61,8 @@ automatically-unhide-macos-hidden-apps = false
     outer.bottom =     5
     # Different top gaps for built-in display (with notch) vs external monitor
     # For built-in display with notch: use 0 to let macOS handle the notch area automatically
-    outer.top = [{ monitor."Built-in" = 5 }, 5]
+    # For external monitor: 50px for SketchyBar (40px height + 10px margin)
+    outer.top = [{ monitor."Built-in" = 5 }, 55]
     outer.right =      5
 
 # 'main' binding mode declaration
