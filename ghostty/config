@@ -3,8 +3,8 @@ clipboard-write = allow
 mouse-shift-capture = true
 cursor-click-to-move = true
 
-# Automatic theme switching based on macOS appearance
-theme = light:GitHub Light Default,dark:Cursor Dark
+# Tokyo Night theme
+theme = dark:Tokyo Night
 
 font-family = "SF Mono"
 font-size = 14
