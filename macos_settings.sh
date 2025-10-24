@@ -2,136 +2,157 @@
 
 #------------------------------------------------------------------------------
 # macOS Settings Configuration Script
-# Configures macOS settings for optimal use with AeroSpace
+# Configures comprehensive macOS settings for optimal use with AeroSpace
 #------------------------------------------------------------------------------
 
-#------------------------------------------------------------------------------
-# Functions
-#------------------------------------------------------------------------------
-
-# usage:
-# log INFO "message"
-# log ERROR "message"
-# Output: [14:23:45] [INFO] Message
-log() {
-    echo "[$(date '+%H:%M:%S')] [$1] ${@:2}"
+# Keyboard settings
+configure_keyboard() {
+    echo "Setting faster keyboard repeat rates..."
+    defaults write -g InitialKeyRepeat -int 10 # normal minimum is 15 (225 ms)
+    defaults write -g KeyRepeat -int 1         # normal minimum is 2 (30 ms)
+    echo "Keyboard repeat rates configured"
 }
 
-# Enable Mission Control grouping by application
-enable_mission_control_grouping() {
-    log INFO "Enabling Mission Control grouping by application"
-    defaults write com.apple.dock expose-group-apps -bool true && killall Dock
-    log INFO "Mission Control will now group windows by application"
+# Finder preferences
+configure_finder() {
+    echo "Configuring enhanced Finder settings..."
+    defaults write com.apple.finder AppleShowAllFiles YES
+    defaults write NSGlobalDomain AppleShowAllExtensions -bool true
+    defaults write com.apple.finder FXPreferredViewStyle -string "Nlsv"
+    defaults write com.apple.finder ShowPathbar -bool true
+    defaults write com.apple.finder ShowStatusBar -bool true
+    defaults write com.apple.finder _FXSortFoldersFirst -bool true
+    defaults write com.apple.finder NewWindowTarget -string "PfHm"
+    defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
+    defaults write com.apple.finder FXDefaultSearchScope -string "SCcf"
+    echo "Finder preferences configured"
 }
 
-# Disable Mission Control grouping by application
-disable_mission_control_grouping() {
-    log INFO "Disabling Mission Control grouping by application"
-    defaults write com.apple.dock expose-group-apps -bool false && killall Dock
-    log INFO "Mission Control grouping disabled"
+# System preferences
+configure_system() {
+    echo "Configuring enhanced system and trackpad settings..."
+    defaults write com.apple.LaunchServices LSQuarantine -bool false
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+    defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+    defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadThreeFingerDrag -bool true
+    defaults write com.apple.AppleMultitouchTrackpad TrackpadThreeFingerDrag -bool true
+    echo "System preferences configured"
 }
 
-# Show current settings
-show_current_settings() {
-    log INFO ""
-    log INFO "Current macOS Settings:"
-    log INFO "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
-
-    local expose_group=$(defaults read com.apple.dock expose-group-apps 2>/dev/null || echo "0")
-
-    if [ "$expose_group" = "1" ]; then
-        log INFO "  Mission Control Grouping: ✓ Enabled (Recommended for AeroSpace)"
-    else
-        log INFO "  Mission Control Grouping: ✗ Disabled"
-    fi
-
-    log INFO ""
+# Text and input preferences
+configure_text_input() {
+    echo "Configuring enhanced text and input settings..."
+    defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+    defaults write NSGlobalDomain NSAutomaticCapitalizationEnabled -bool false
+    defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
+    defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
+    defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
+    defaults write NSGlobalDomain NSTextMovementDefaultKeyTimeout -float 0.03
+    echo "Text input preferences configured"
 }
 
-# Show interactive menu
-show_menu() {
-    log INFO ""
-    log INFO "╔════════════════════════════════════════════════════════════════╗"
-    log INFO "║  macOS Settings Configuration for AeroSpace                   ║"
-    log INFO "╚════════════════════════════════════════════════════════════════╝"
-    log INFO ""
-    log INFO "Choose an option:"
-    log INFO ""
-    log INFO "  1) Enable Mission Control grouping (Recommended)"
-    log INFO "  2) Disable Mission Control grouping"
-    log INFO "  3) Show current settings"
-    log INFO "  4) Exit"
-    log INFO ""
-    read -p "Enter your choice (1-4): " choice
+# Save and print dialogs
+configure_dialogs() {
+    echo "Expanding save and print dialogs by default..."
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
+    echo "Save and print dialogs configured"
+}
 
-    case $choice in
-        1)
-            enable_mission_control_grouping
-            ;;
-        2)
-            disable_mission_control_grouping
-            ;;
-        3)
-            show_current_settings
-            ;;
-        4)
-            log INFO "Exiting..."
-            exit 0
-            ;;
-        *)
-            log ERROR "Invalid option. Please choose 1-4."
-            ;;
-    esac
+# Performance and UI enhancements
+configure_performance() {
+    echo "Optimizing window and UI performance..."
+    defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+    defaults write NSGlobalDomain NSToolbarTitleViewRolloverDelay -float 0
+    echo "Performance optimizations configured"
+}
+
+# Screenshot settings
+configure_screenshots() {
+    echo "Configuring enhanced screenshot settings..."
+    mkdir -p ~/Desktop/Screenshots
+    defaults write com.apple.screencapture type -string "png"
+    defaults write com.apple.screencapture "include-date" -bool "true"
+    defaults write com.apple.screencapture location -string "$HOME/Desktop/Screenshots"
+    defaults write com.apple.screencapture disable-shadow -bool true
+    echo "Screenshot settings configured"
+}
+
+# .DS_Store settings
+configure_ds_store() {
+    echo "Preventing .DS_Store file creation on network and USB volumes..."
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+    defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+    echo ".DS_Store settings configured"
+}
+
+# Show Library folder
+configure_library_visibility() {
+    echo "Making Library folder visible in home directory..."
+    chflags nohidden ~/Library
+    echo "Library folder made visible"
+}
+
+# Dock settings
+configure_dock() {
+    echo "Configuring Dock settings..."
+    defaults write com.apple.Dock autohide-delay -float 0
+    defaults write com.apple.dock autohide-time-modifier -float 0
+    defaults write com.apple.dock expose-animation-duration -float 0.1
+    defaults write com.apple.dock springboard-show-duration -int 0
+    defaults write com.apple.dock springboard-hide-duration -int 0
+    defaults write com.apple.dock springboard-page-duration -int 0
+    defaults write com.apple.dock persistent-apps -array
+    defaults write com.apple.dock mru-spaces -bool false
+    # Enable Mission Control grouping by application (AeroSpace fix)
+    defaults write com.apple.dock expose-group-apps -bool true
+    echo "Dock preferences configured"
+}
+
+# iCloud default save
+configure_icloud() {
+    echo "Setting default save location to local disk instead of iCloud..."
+    defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
+    echo "Default save location configured"
+}
+
+# Disable Apple Intelligence
+configure_apple_intelligence() {
+    echo "Disabling Apple Intelligence..."
+    defaults write com.apple.CloudSubscriptionFeatures.optIn "545129924" -bool "false"
+    echo "Apple Intelligence disabled"
+}
+
+# Restart affected applications
+restart_applications() {
+    echo "Applying changes by restarting system components..."
+    killall Dock
+    killall Finder
+    killall SystemUIServer
+    echo "Applications restarted"
 }
 
 #------------------------------------------------------------------------------
 # Main
 #------------------------------------------------------------------------------
 
-# Check if running with arguments
-if [ $# -eq 0 ]; then
-    # Interactive mode
-    while true; do
-        show_menu
-        log INFO ""
-        read -p "Do you want to continue? (y/N): " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-            log INFO "Goodbye!"
-            exit 0
-        fi
-    done
-else
-    # Command-line mode
-    case "$1" in
-        --enable-mission-control-grouping)
-            enable_mission_control_grouping
-            ;;
-        --disable-mission-control-grouping)
-            disable_mission_control_grouping
-            ;;
-        --show)
-            show_current_settings
-            ;;
-        --help|-h)
-            log INFO "Usage: $0 [OPTION]"
-            log INFO ""
-            log INFO "Mission Control Fix for AeroSpace:"
-            log INFO "  AeroSpace may cause Mission Control to display windows too small."
-            log INFO "  Enabling grouping by application fixes this issue."
-            log INFO ""
-            log INFO "Options:"
-            log INFO "  --enable-mission-control-grouping   Enable grouping (Recommended)"
-            log INFO "  --disable-mission-control-grouping  Disable grouping"
-            log INFO "  --show                              Show current settings"
-            log INFO "  -h, --help                          Show this help message"
-            log INFO ""
-            log INFO "Run without arguments for interactive menu."
-            ;;
-        *)
-            log ERROR "Unknown option: $1"
-            log INFO "Use --help for usage information"
-            exit 1
-            ;;
-    esac
-fi
+echo "Configuring macOS settings for optimal use with AeroSpace..."
+
+configure_keyboard
+configure_finder
+configure_system
+configure_text_input
+configure_dialogs
+configure_performance
+configure_screenshots
+configure_ds_store
+configure_library_visibility
+configure_dock
+configure_icloud
+configure_apple_intelligence
+restart_applications
+
+echo ""
+echo "macOS settings have been updated successfully!"
