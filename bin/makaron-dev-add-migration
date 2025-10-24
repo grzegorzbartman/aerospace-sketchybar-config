@@ -1,5 +1,0 @@
-#!/bin/bash
-migration_file="$HOME/.local/share/makaron/migrations/$(date +%s).sh"
-echo "#!/bin/bash" > "$migration_file"
-echo "Created: $migration_file"
-${EDITOR:-nvim} "$migration_file"
