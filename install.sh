@@ -49,6 +49,10 @@ echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.bashrc"
 # Add to current session
 export PATH="$HOME/.local/share/makaron/bin:$PATH"
 
+# Set execute permissions on bin files
+echo "Setting execute permissions on bin files..."
+chmod +x "$MAKARON_PATH/bin"/* 2>/dev/null || true
+
 echo "Added $MAKARON_PATH/bin to PATH in shell config files"
 
 echo "Installation completed successfully!"
