@@ -36,23 +36,6 @@ cd "$MAKARON_PATH"
 echo "Starting installation process..."
 bash "$MAKARON_PATH/install/all.sh"
 
-# Fix existing symlinks to point to new location
-echo "Fixing existing symlinks..."
-if [ -L "$HOME/.aerospace.toml" ]; then
-    rm "$HOME/.aerospace.toml"
-    ln -s "$MAKARON_PATH/aerospace/.aerospace.toml" "$HOME/.aerospace.toml"
-fi
-
-if [ -L "$HOME/.config/ghostty" ]; then
-    rm "$HOME/.config/ghostty"
-    ln -s "$MAKARON_PATH/ghostty" "$HOME/.config/ghostty"
-fi
-
-if [ -L "$HOME/.config/sketchybar" ]; then
-    rm "$HOME/.config/sketchybar"
-    ln -s "$MAKARON_PATH/sketchybar" "$HOME/.config/sketchybar"
-fi
-
 # Add bin directory to PATH
 echo "Setting up PATH..."
 # Remove old PATH entries first
