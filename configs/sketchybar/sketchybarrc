@@ -58,17 +58,11 @@ sketchybar --default "${default[@]}"
 # Integration with AeroSpace window manager
 # https://nikitabobko.github.io/AeroSpace/goodness#show-aerospace-workspaces-in-sketchybar
 
-# Create specific events for each workspace to improve performance
-for sid in $(aerospace list-workspaces --all); do
-  sketchybar --add event aerospace_workspace_change_$sid
-done
-
-# Add general workspace change event for compatibility
 sketchybar --add event aerospace_workspace_change
 
 for sid in $(aerospace list-workspaces --all); do
   sketchybar --add item space.$sid left \
-    --subscribe space.$sid aerospace_workspace_change_$sid aerospace_workspace_change front_app_switched \
+    --subscribe space.$sid aerospace_workspace_change front_app_switched \
     --set space.$sid \
     icon="$sid" \
     icon.padding_left=8 \
