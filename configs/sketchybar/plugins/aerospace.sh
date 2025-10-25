@@ -63,7 +63,8 @@ fi
 
 # Get list of apps in this workspace
 apps=""
-if [[ $(aerospace list-workspaces --focused) == "$WORKSPACE" ]]; then
+focused_workspace=$(aerospace list-workspaces --focused 2>/dev/null)
+if [[ "$focused_workspace" == "$WORKSPACE" ]]; then
 # Focused workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
@@ -103,6 +104,6 @@ done <<< "$windows"
     if [[ -n "$icons" ]]; then
     sketchybar --set "$NAME" label="$icons" label.drawing=on
     else
-    # Show workspace number even when empty
-    sketchybar --set "$NAME" label="$WORKSPACE" label.drawing=on
+    # Hide label when workspace is empty but keep workspace visible
+    sketchybar --set "$NAME" label="" label.drawing=off
     fi
