@@ -135,6 +135,68 @@ If you encounter issues with your installation:
 - **Check migration status**: `makaron-migration-status` - See which migrations have been applied
 - **Manual migration**: `makaron-migrate` - Run pending migrations manually
 
+#### Common Issues After Fresh Installation
+
+**Problem: Commands `makaron-*` are not available in terminal**
+
+After installation, you need to reload your shell to make the commands available:
+
+```bash
+# Option 1: Reload your shell configuration
+source ~/.zshrc
+
+# Option 2: Restart your terminal completely
+# Close and reopen your terminal application
+```
+
+The install script adds `~/.local/share/makaron/bin` to your PATH in `~/.zshrc` and `~/.bashrc`. If commands still don't work after reloading:
+
+```bash
+# Verify PATH is correct
+echo $PATH | grep makaron
+
+# If not found, manually add to your shell config
+echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+```
+
+**Problem: Top bar (menu bar) is not auto-hiding**
+
+The menu bar autohide is configured through macOS settings. To enable it:
+
+```bash
+# Run the macOS settings script
+~/.local/share/makaron/install/macos_settings.sh
+
+# Then restart SystemUIServer to apply changes
+killall SystemUIServer
+```
+
+Alternatively, enable it manually:
+1. Open **System Settings**
+2. Go to **Desktop & Dock**
+3. Enable **Automatically hide and show the menu bar**
+
+**Note**: On some macOS versions, you might need to log out and log back in for the menu bar autohide to take effect.
+
+**Problem: SketchyBar or AeroSpace not working properly**
+
+Try reloading the configuration:
+
+```bash
+makaron-reload-aerospace-sketchybar
+```
+
+If that doesn't help, check if the services are running:
+
+```bash
+# Check if AeroSpace is running
+pgrep -x "AeroSpace" || open -a AeroSpace
+
+# Check if SketchyBar is running
+pgrep -x "sketchybar" || brew services restart sketchybar
+```
+
 ## Keyboard Shortcuts
 
 **Window Management:**
