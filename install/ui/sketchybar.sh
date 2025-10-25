@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# Install jq (required for app menu)
-if ! command -v jq &> /dev/null; then
-    brew install jq
-fi
-
 # Install SketchyBar
 if ! command -v sketchybar &> /dev/null; then
     brew tap FelixKratz/formulae
