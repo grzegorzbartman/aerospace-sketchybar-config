@@ -65,12 +65,29 @@ fi
 apps=""
 focused_workspace=$(aerospace list-workspaces --focused 2>/dev/null)
 
+# Try alternative method to get focused workspace
+focused_workspace_alt=$(aerospace get active-space 2>/dev/null)
+
+# Debug: Check what aerospace actually returns
+echo "DEBUG: WORKSPACE=$WORKSPACE, FOCUSED=$focused_workspace, ALT=$focused_workspace_alt" >> /tmp/aerospace_debug.log
+
 # Check if this workspace is focused (handle various formats)
 # Remove any whitespace and compare
 focused_workspace_clean=$(echo "$focused_workspace" | tr -d '[:space:]')
 workspace_clean=$(echo "$WORKSPACE" | tr -d '[:space:]')
 
-if [[ "$focused_workspace_clean" == "$workspace_clean" ]] || [[ "$focused_workspace_clean" -eq "$workspace_clean" ]]; then
+# Try multiple comparison methods
+# Also check if workspace is in the list of active workspaces
+active_workspaces=$(aerospace list-workspaces --all 2>/dev/null)
+is_active=$(echo "$active_workspaces" | grep -q "^$WORKSPACE$" && echo "true" || echo "false")
+
+if [[ "$focused_workspace_clean" == "$workspace_clean" ]] || \
+   [[ "$focused_workspace_clean" -eq "$workspace_clean" ]] || \
+   [[ "$focused_workspace" == "$WORKSPACE" ]] || \
+   [[ "$focused_workspace" -eq "$WORKSPACE" ]] || \
+   [[ "$focused_workspace_alt" == "$WORKSPACE" ]] || \
+   [[ "$focused_workspace_alt" -eq "$WORKSPACE" ]] || \
+   [[ "$is_active" == "true" && "$focused_workspace" == "$WORKSPACE" ]]; then
 # Focused workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
