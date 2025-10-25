@@ -122,8 +122,12 @@ configure_menubar() {
 # Accessibility - Reduce transparency
 configure_accessibility() {
     echo "Configuring accessibility settings..."
-    defaults write com.apple.universalaccess reduceTransparency -bool true
-    echo "Accessibility settings configured"
+    if defaults write com.apple.universalaccess reduceTransparency -bool true 2>/dev/null; then
+        echo "Accessibility settings configured"
+    else
+        echo "⚠️  Could not enable Reduce Transparency automatically."
+        echo "   Please enable manually: System Settings → Accessibility → Display → Reduce transparency"
+    fi
 }
 
 # iCloud default save

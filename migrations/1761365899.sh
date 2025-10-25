@@ -3,15 +3,6 @@
 # Migration: Enable Dock autohide, Menu Bar autohide, and Reduce Transparency
 # Applies accessibility and UI settings for better AeroSpace integration
 
-set -e
-
-error_exit() {
-  echo -e "\033[31mERROR: Migration failed! Manual intervention required.\033[0m" >&2
-  exit 1
-}
-
-trap error_exit ERR
-
 echo "Running migration: Enable Dock autohide, Menu Bar autohide, and Reduce Transparency"
 
 # Check if settings are already applied (idempotent)
@@ -25,22 +16,43 @@ if [ "$DOCK_AUTOHIDE" = "1" ] && [ "$MENUBAR_AUTOHIDE" = "1" ] && [ "$REDUCE_TRA
 fi
 
 # Apply Dock autohide
-echo "Enabling Dock autohide..."
-defaults write com.apple.dock autohide -bool true
+if [ "$DOCK_AUTOHIDE" != "1" ]; then
+    echo "Enabling Dock autohide..."
+    if defaults write com.apple.dock autohide -bool true 2>/dev/null; then
+        echo "✓ Dock autohide enabled"
+    else
+        echo "⚠️  Could not enable Dock autohide automatically."
+        echo "   Please enable manually: System Settings → Desktop & Dock → Automatically hide and show the Dock"
+    fi
+fi
 
 # Apply Menu Bar autohide (always)
-echo "Enabling Menu Bar autohide (always)..."
-defaults write NSGlobalDomain _HIHideMenuBar -bool true
+if [ "$MENUBAR_AUTOHIDE" != "1" ]; then
+    echo "Enabling Menu Bar autohide (always)..."
+    if defaults write NSGlobalDomain _HIHideMenuBar -bool true 2>/dev/null; then
+        echo "✓ Menu Bar autohide enabled"
+    else
+        echo "⚠️  Could not enable Menu Bar autohide automatically."
+        echo "   Please enable manually: System Settings → Desktop & Dock → Automatically hide and show the menu bar → Always"
+    fi
+fi
 
 # Apply Reduce Transparency
-echo "Enabling Reduce Transparency..."
-defaults write com.apple.universalaccess reduceTransparency -bool true
+if [ "$REDUCE_TRANSPARENCY" != "1" ]; then
+    echo "Enabling Reduce Transparency..."
+    if defaults write com.apple.universalaccess reduceTransparency -bool true 2>/dev/null; then
+        echo "✓ Reduce Transparency enabled"
+    else
+        echo "⚠️  Could not enable Reduce Transparency automatically."
+        echo "   Please enable manually: System Settings → Accessibility → Display → Reduce transparency"
+    fi
+fi
 
 # Restart Dock and SystemUIServer to apply changes
 echo "Applying changes..."
 killall Dock 2>/dev/null || true
 killall SystemUIServer 2>/dev/null || true
 
-echo "Migration completed successfully"
+echo "Migration completed"
 echo "Note: You may need to log out and log back in for Menu Bar changes to take full effect"
 
