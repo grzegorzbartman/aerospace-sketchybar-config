@@ -72,22 +72,49 @@ After installation, you'll have access to these commands:
 - **`makaron-theme-tokyo-night`** - Switch to Tokyo Night theme
 - **`makaron-theme-catppuccin`** - Switch to Catppuccin theme
 - **`makaron-theme-catppuccin-latte`** - Switch to Catppuccin Latte theme
+- **`makaron-theme-everforest`** - Switch to Everforest theme
+- **`makaron-theme-flexoki-light`** - Switch to Flexoki Light theme
+- **`makaron-theme-gruvbox`** - Switch to Gruvbox theme
+- **`makaron-theme-kanagawa`** - Switch to Kanagawa theme
+- **`makaron-theme-matte-black`** - Switch to Matte Black theme
+- **`makaron-theme-nord`** - Switch to Nord theme
+- **`makaron-theme-osaka-jade`** - Switch to Osaka Jade theme
+- **`makaron-theme-ristretto`** - Switch to Ristretto theme
+- **`makaron-theme-rose-pine`** - Switch to Rose Pine theme
 - **`./install/macos_settings.sh`** - Apply macOS settings (optional)
 
 ### Themes
 
-Makaron includes three beautiful themes that change the colors of your UI and wallpaper:
+Makaron includes twelve beautiful themes that change the colors of your UI and wallpaper:
 
 1. **Tokyo Night** (default) - Dark theme with purple/blue accents
 2. **Catppuccin Mocha** - Dark theme with pastel colors
 3. **Catppuccin Latte** - Light theme for daytime use
+4. **Everforest** - Dark theme with green forest colors
+5. **Flexoki Light** - Light theme with modern colors
+6. **Gruvbox** - Dark theme with warm retro colors
+7. **Kanagawa** - Dark theme inspired by Japanese art
+8. **Matte Black** - Minimalist dark theme
+9. **Nord** - Cool arctic-inspired color palette
+10. **Osaka Jade** - Dark theme with jade green accents
+11. **Ristretto** - Warm dark theme with coffee tones
+12. **Rose Pine** - Light theme with rose and pine colors
 
 Switch themes instantly with:
 
 ```bash
-makaron-theme-tokyo-night      # Dark purple/blue
-makaron-theme-catppuccin        # Dark pastel
-makaron-theme-catppuccin-latte  # Light pastel
+makaron-theme-tokyo-night         # Dark purple/blue
+makaron-theme-catppuccin           # Dark pastel
+makaron-theme-catppuccin-latte     # Light pastel
+makaron-theme-everforest           # Dark forest green
+makaron-theme-flexoki-light        # Light modern
+makaron-theme-gruvbox              # Dark retro warm
+makaron-theme-kanagawa             # Dark Japanese art
+makaron-theme-matte-black          # Minimalist dark
+makaron-theme-nord                 # Cool arctic
+makaron-theme-osaka-jade           # Dark jade green
+makaron-theme-ristretto            # Dark coffee warm
+makaron-theme-rose-pine            # Light rose/pine
 ```
 
 Each theme includes:
