@@ -15,3 +15,5 @@ When user requests changes or improvements, ask 2-6 clarifying questions to prec
 This is an open-source project on GitHub - changes must support both fresh installations (new users) and updates (existing users). Consider install.sh for new setups and migrations for existing installations.
 
 Commit changes frequently with concise single-line commit messages.
+
+If something doesn't work correctly after 2-3 iterations, search Google using MCP Playwright.

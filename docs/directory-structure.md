@@ -11,7 +11,11 @@ makaron/
 │   ├── makaron-update                    # Update configuration from git
 │   ├── makaron-reinstall                 # Complete reinstall
 │   ├── makaron-reload-aerospace-sketchybar  # Reload UI configurations
-│   └── makaron-macos-config-reload       # Reload macOS settings
+│   ├── makaron-macos-config-reload       # Reload macOS settings
+│   ├── makaron-switch-theme              # Helper to switch themes
+│   ├── makaron-theme-tokyo-night         # Switch to Tokyo Night theme
+│   ├── makaron-theme-catppuccin          # Switch to Catppuccin theme
+│   └── makaron-theme-catppuccin-latte    # Switch to Catppuccin Latte theme
 ├── configs/                      # Configuration files
 │   ├── aerospace/                # AeroSpace window manager configs
 │   ├── sketchybar/              # SketchyBar status bar configs
@@ -48,7 +52,24 @@ makaron/
 │       └── sketchybar.sh
 ├── migrations/                   # Database-style migration scripts
 │   ├── 1734567890.sh           # Example: Move configs to configs/
-│   └── 1761363175.sh           # Example: Fix PATH configuration
+│   ├── 1761363175.sh           # Example: Fix PATH configuration
+│   └── 1761364893.sh           # Example: Initialize theme system
+├── themes/                       # Theme definitions (colors + wallpapers)
+│   ├── tokyo-night/             # Default theme
+│   │   ├── sketchybar.colors   # SketchyBar color definitions
+│   │   ├── borders.colors      # Borders color definitions
+│   │   └── backgrounds/        # Desktop backgrounds (original names)
+│   │       └── 1-*.png
+│   ├── catppuccin/              # Catppuccin Mocha theme
+│   │   ├── sketchybar.colors
+│   │   ├── borders.colors
+│   │   └── backgrounds/
+│   │       └── 1-*.png
+│   └── catppuccin-latte/        # Catppuccin Latte (light) theme
+│       ├── sketchybar.colors
+│       ├── borders.colors
+│       └── backgrounds/
+│           └── 1-*.png
 ├── install.sh                    # Main installation entry point
 └── README.md                     # User-facing documentation
 
@@ -64,12 +85,18 @@ $HOME/
 │   │       ├── bin/            # User commands (added to PATH)
 │   │       ├── configs/        # Configuration templates
 │   │       ├── install/        # Installation scripts
-│   │       └── migrations/     # Migration scripts
+│   │       ├── migrations/     # Migration scripts
+│   │       ├── themes/         # Theme definitions
+│   │       │   ├── tokyo-night/
+│   │       │   ├── catppuccin/
+│   │       │   └── catppuccin-latte/
+│   │       └── current-theme -> themes/tokyo-night  # Symlink to active theme
 │   └── state/
 │       └── makaron/
 │           └── migrations/     # Migration state tracking
 │               ├── 1734567890.sh      # Empty file = completed
 │               ├── 1761363175.sh      # Empty file = completed
+│               ├── 1761364893.sh      # Empty file = completed
 │               └── skipped/
 │                   └── TIMESTAMP.sh   # Empty file = skipped by user
 ├── .config/
@@ -130,4 +157,46 @@ Timestamped shell scripts that perform incremental updates to existing installat
 - **PATH**: Added to `~/.zshrc` and `~/.bashrc` to make bin commands available.
 - **State separation**: Configuration (in `.local/share`) is separate from state (in `.local/state`).
 - **Git repository**: The entire `~/.local/share/makaron/` directory is a git repository that can be updated with `makaron-update`.
+
+## Themes
+
+Makaron includes a theme system that allows users to switch color schemes for SketchyBar, AeroSpace borders, and desktop wallpapers.
+
+### Available Themes
+
+1. **Tokyo Night** (default) - Dark theme with purple/blue accents
+2. **Catppuccin Mocha** - Dark theme with pastel colors
+3. **Catppuccin Latte** - Light theme with pastel colors
+
+### Theme Structure
+
+Each theme directory contains:
+- `sketchybar.colors` - Color definitions for SketchyBar (bar, icons, workspaces)
+- `borders.colors` - Color definitions for AeroSpace window borders
+- `backgrounds/` - Directory with desktop wallpaper images (original filenames preserved for copyright)
+
+### Theme Switching
+
+Users can switch themes with:
+```bash
+makaron-theme-tokyo-night
+makaron-theme-catppuccin
+makaron-theme-catppuccin-latte
+```
+
+The system:
+1. Updates `current-theme` symlink to point to the selected theme
+2. Sets the desktop wallpaper
+3. Reloads SketchyBar and AeroSpace configurations with new colors
+4. Restarts borders with new colors
+
+### Adding New Themes
+
+To add a new theme:
+1. Create a directory in `themes/` with the theme name
+2. Add `sketchybar.colors` with color exports (see existing themes)
+3. Add `borders.colors` with border color exports
+4. Create `backgrounds/` directory and add wallpaper images (preserve original filenames)
+5. Create a command script in `bin/makaron-theme-<name>` that calls `makaron-switch-theme <name>`
+6. Make the command script executable
 

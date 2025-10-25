@@ -69,7 +69,31 @@ After installation, you'll have access to these commands:
 - **`makaron-migrate`** - Run pending migrations
 - **`makaron-migration-status`** - Show migration status
 - **`makaron-dev-add-migration`** - Create new migration (development)
+- **`makaron-theme-tokyo-night`** - Switch to Tokyo Night theme
+- **`makaron-theme-catppuccin`** - Switch to Catppuccin theme
+- **`makaron-theme-catppuccin-latte`** - Switch to Catppuccin Latte theme
 - **`./install/macos_settings.sh`** - Apply macOS settings (optional)
+
+### Themes
+
+Makaron includes three beautiful themes that change the colors of your UI and wallpaper:
+
+1. **Tokyo Night** (default) - Dark theme with purple/blue accents
+2. **Catppuccin Mocha** - Dark theme with pastel colors
+3. **Catppuccin Latte** - Light theme for daytime use
+
+Switch themes instantly with:
+
+```bash
+makaron-theme-tokyo-night      # Dark purple/blue
+makaron-theme-catppuccin        # Dark pastel
+makaron-theme-catppuccin-latte  # Light pastel
+```
+
+Each theme includes:
+- Custom color scheme for SketchyBar
+- Matching window border colors
+- Coordinated desktop wallpaper
 
 ### Manual Commands
 

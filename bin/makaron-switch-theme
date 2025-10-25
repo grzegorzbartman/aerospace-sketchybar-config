@@ -1,0 +1,47 @@
+#!/bin/bash
+
+# Helper script to switch themes
+# Usage: makaron-switch-theme <theme-name>
+
+set -e
+
+THEME_NAME="$1"
+
+if [ -z "$THEME_NAME" ]; then
+    echo "Error: Theme name required"
+    echo "Usage: makaron-switch-theme <theme-name>"
+    exit 1
+fi
+
+MAKARON_PATH="${MAKARON_PATH:-$HOME/.local/share/makaron}"
+THEME_DIR="$MAKARON_PATH/themes/$THEME_NAME"
+CURRENT_THEME_LINK="$MAKARON_PATH/current-theme"
+
+# Check if theme exists
+if [ ! -d "$THEME_DIR" ]; then
+    echo "Error: Theme '$THEME_NAME' not found in $MAKARON_PATH/themes/"
+    exit 1
+fi
+
+echo "Switching to theme: $THEME_NAME"
+
+# Update current-theme symlink
+rm -f "$CURRENT_THEME_LINK"
+ln -s "$THEME_DIR" "$CURRENT_THEME_LINK"
+
+# Set wallpaper if backgrounds directory exists
+if [ -d "$THEME_DIR/backgrounds" ]; then
+    # Use the first image file found in backgrounds/
+    WALLPAPER=$(find "$THEME_DIR/backgrounds" -type f \( -name "*.png" -o -name "*.jpg" -o -name "*.jpeg" \) | sort | head -n 1)
+    if [ -n "$WALLPAPER" ]; then
+        echo "Setting wallpaper..."
+        osascript -e "tell application \"Finder\" to set desktop picture to POSIX file \"$WALLPAPER\""
+    fi
+fi
+
+# Reload configurations
+echo "Reloading UI configurations..."
+"$MAKARON_PATH/bin/makaron-reload-aerospace-sketchybar"
+
+echo "✨ Theme switched to $THEME_NAME successfully!"
+
