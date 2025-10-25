@@ -54,26 +54,33 @@ case "$1" in
 esac
 }
 
+# Load theme colors
+MAKARON_PATH="${MAKARON_PATH:-$HOME/.local/share/makaron}"
+THEME_DIR="$MAKARON_PATH/current-theme"
+if [ -f "$THEME_DIR/sketchybar.colors" ]; then
+  source "$THEME_DIR/sketchybar.colors"
+fi
+
 # Get list of apps in this workspace
 apps=""
 if [[ $(aerospace list-workspaces --focused) == "$WORKSPACE" ]]; then
-# Focused workspace - TokyoNight active colors
+# Focused workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
-  background.color=0xff1a1b26 \
-  background.border_color=0xff7aa2f7 \
+  background.color="${SPACE_FOCUSED_BACKGROUND_COLOR:-0xff1a1b26}" \
+  background.border_color="${SPACE_FOCUSED_BORDER_COLOR:-0xff7aa2f7}" \
   background.border_width=2 \
-  icon.color=0xffc0caf5 \
-  label.color=0xffc0caf5
+  icon.color="${SPACE_FOCUSED_ICON_COLOR:-0xffc0caf5}" \
+  label.color="${SPACE_FOCUSED_LABEL_COLOR:-0xffc0caf5}"
 else
-# Inactive workspace - TokyoNight inactive colors
+# Inactive workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
-  background.color=0xff24283b \
-  background.border_color=0xff3b4261 \
+  background.color="${SPACE_BACKGROUND_COLOR:-0xff24283b}" \
+  background.border_color="${SPACE_BORDER_COLOR:-0xff3b4261}" \
   background.border_width=1 \
-  icon.color=0xffa9b1d6 \
-  label.color=0xffa9b1d6
+  icon.color="${SPACE_ICON_COLOR:-0xffa9b1d6}" \
+  label.color="${SPACE_LABEL_COLOR:-0xffa9b1d6}"
 fi
 
 # Get windows in this workspace and extract unique app names

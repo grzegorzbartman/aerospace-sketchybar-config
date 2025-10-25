@@ -1,5 +1,12 @@
 #!/bin/sh
 
+# Load theme colors
+MAKARON_PATH="${MAKARON_PATH:-$HOME/.local/share/makaron}"
+THEME_DIR="$MAKARON_PATH/current-theme"
+if [ -f "$THEME_DIR/sketchybar.colors" ]; then
+  source "$THEME_DIR/sketchybar.colors"
+fi
+
 PERCENTAGE="$(pmset -g batt | grep -Eo "\d+%" | cut -d% -f1)"
 CHARGING="$(pmset -g batt | grep 'AC Power')"
 
@@ -26,5 +33,5 @@ fi
 # The item invoking this script (name $NAME) will get its icon and label
 # updated with the current battery status
 sketchybar --set "$NAME" icon="$ICON" label="${PERCENTAGE}%" \
-  icon.color=0xffffffff \
-  label.color=0xffffffff
+  icon.color="${ICON_COLOR:-0xffc0caf5}" \
+  label.color="${LABEL_COLOR:-0xffc0caf5}"

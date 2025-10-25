@@ -1,6 +1,13 @@
 #!/bin/sh
 # macOS memory percent for SketchyBar: (App Memory + Wired + Compressed) / Total
 
+# Load theme colors
+MAKARON_PATH="${MAKARON_PATH:-$HOME/.local/share/makaron}"
+THEME_DIR="$MAKARON_PATH/current-theme"
+if [ -f "$THEME_DIR/sketchybar.colors" ]; then
+  source "$THEME_DIR/sketchybar.colors"
+fi
+
 # Get page size and total RAM in one sysctl call
 eval "$(sysctl -n vm.pagesize hw.memsize | awk 'NR==1{print "PAGE_SIZE="$1} NR==2{print "TOTAL_BYTES="$1}')"
 
@@ -28,7 +35,8 @@ else
 fi
 
 # Update SketchyBar with error handling
-sketchybar --set "$NAME" label="$MEMORY_DISPLAY" 2>/dev/null || {
+sketchybar --set "$NAME" label="$MEMORY_DISPLAY" \
+  label.color="${LABEL_COLOR:-0xffc0caf5}" 2>/dev/null || {
   echo "Error updating memory display" >&2
   exit 1
 }

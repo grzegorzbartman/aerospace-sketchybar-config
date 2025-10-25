@@ -1,6 +1,13 @@
 #!/bin/sh
 # CPU load average and core count for SketchyBar
 
+# Load theme colors
+MAKARON_PATH="${MAKARON_PATH:-$HOME/.local/share/makaron}"
+THEME_DIR="$MAKARON_PATH/current-theme"
+if [ -f "$THEME_DIR/sketchybar.colors" ]; then
+  source "$THEME_DIR/sketchybar.colors"
+fi
+
 # Get number of CPU cores
 CPU_CORES=$(sysctl -n hw.ncpu)
 
@@ -18,7 +25,8 @@ else
 fi
 
 # Update SketchyBar with error handling
-sketchybar --set "$NAME" label="$CPU_DISPLAY" 2>/dev/null || {
+sketchybar --set "$NAME" label="$CPU_DISPLAY" \
+  label.color="${LABEL_COLOR:-0xffc0caf5}" 2>/dev/null || {
   echo "Error updating CPU display" >&2
   exit 1
 }
