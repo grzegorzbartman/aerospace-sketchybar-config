@@ -14,12 +14,8 @@ if ! command -v jq &>/dev/null; then
     exit 1
 fi
 
-check_accessibility() {
-    if ! osascript -e 'tell application "System Events" to get name of first application process whose frontmost is true' &>/dev/null; then
-        osascript -e 'display notification "App Menu requires Accessibility permissions for SketchyBar and osascript.\n\nGo to: System Settings → Privacy & Security → Accessibility" with title "SketchyBar App Menu" sound name "Basso"' 2>/dev/null
-        return 1
-    fi
-    return 0
+show_accessibility_warning() {
+    osascript -e 'display notification "App Menu requires Accessibility permissions for SketchyBar and osascript.\n\nGo to: System Settings → Privacy & Security → Accessibility" with title "SketchyBar App Menu" sound name "Basso"' 2>/dev/null &
 }
 
 [ -f "$THEME_DIR/sketchybar.colors" ] && source "$THEME_DIR/sketchybar.colors"
@@ -51,20 +47,16 @@ case "$CMD" in
 
     load_top)
         clear_menu
-
-        if ! check_accessibility; then
-            exit 0
-        fi
-
-        MENUS=$(osascript 2>/dev/null << 'EOF'
-on run
-    set frontApp to do shell script "osascript -e 'tell application \"System Events\" to name of first application process whose frontmost is true'"
-
-    tell application "System Events"
-        tell process frontApp
-            set menuList to {}
-            set idx to 0
-            repeat with mb in menu bar items of menu bar 1
+        
+        APP=$(osascript -e 'tell application "System Events" to name of first application process whose frontmost is true' 2>/dev/null)
+        [ -z "$APP" ] && show_accessibility_warning && exit 0
+        
+        MENUS=$(osascript 2>/dev/null << EOF
+tell application "System Events"
+    tell process "$APP"
+        set menuList to {}
+        set idx to 0
+        repeat with mb in menu bar items of menu bar 1
             try
                 set menuName to name of mb
                 if menuName is not "Apple" then
@@ -80,12 +72,11 @@ on run
                     end if
                 end if
             end try
-                set idx to idx + 1
-            end repeat
-            return menuList
-        end tell
+            set idx to idx + 1
+        end repeat
+        return menuList
     end tell
-end run
+end tell
 EOF
 )
 
@@ -139,53 +130,49 @@ EOF
                 icon.drawing=off \
                 background.drawing=off
 
+        APP=$(osascript -e 'tell application "System Events" to name of first application process whose frontmost is true' 2>/dev/null)
+        [ -z "$APP" ] && show_accessibility_warning && exit 0
+        
         MENU_INDEX=$((MENU_PATH + 1))
-
-        ITEMS=$(MENU_INDEX=$MENU_INDEX osascript 2>/dev/null << 'EOF'
-on run
-    set frontApp to do shell script "osascript -e 'tell application \"System Events\" to name of first application process whose frontmost is true'"
-    set menuIdx to (do shell script "echo $MENU_INDEX") as integer
-
-    tell application "System Events"
-        tell process frontApp
-            try
-                set menuBarItem to menu bar item menuIdx of menu bar 1
-                set menuItems to menu items of menu 1 of menuBarItem
-                set itemList to {}
-                set itemIdx to 0
-                repeat with mi in menuItems
+        
+        ITEMS=$(osascript 2>/dev/null <<EOF
+tell application "System Events"
+    tell process "$APP"
+        try
+            set menuBarItem to menu bar item $MENU_INDEX of menu bar 1
+            set menuItems to menu items of menu 1 of menuBarItem
+            set itemList to {}
+            set itemIdx to 0
+            repeat with mi in menuItems
+                try
+                    set itemName to name of mi
+                    set itemEnabled to enabled of mi
+                    set hasSubmenu to false
                     try
-                        set itemName to name of mi
-                        set itemEnabled to enabled of mi
-                        set hasSubmenu to false
-                        try
-                            set sm to menu 1 of mi
-                            set hasSubmenu to true
-                        end try
-                        if itemName is missing value then
-                            set end of itemList to "---|" & itemIdx
-                        else if hasSubmenu then
-                            set end of itemList to itemName & "|" & itemIdx & "|SUB|" & itemEnabled
-                        else if itemEnabled then
-                            set end of itemList to itemName & "|" & itemIdx & "|ACT|true"
-                        else
-                            set end of itemList to itemName & "|" & itemIdx & "|ACT|false"
-                        end if
+                        set sm to menu 1 of mi
+                        set hasSubmenu to true
                     end try
-                    set itemIdx to itemIdx + 1
-                end repeat
-                return itemList
-            on error
-                return {}
-            end try
-        end tell
+                    if itemName is missing value then
+                        set end of itemList to "---|" & itemIdx
+                    else if hasSubmenu then
+                        set end of itemList to itemName & "|" & itemIdx & "|SUB|" & itemEnabled
+                    else if itemEnabled then
+                        set end of itemList to itemName & "|" & itemIdx & "|ACT|true"
+                    else
+                        set end of itemList to itemName & "|" & itemIdx & "|ACT|false"
+                    end if
+                end try
+                set itemIdx to itemIdx + 1
+            end repeat
+            return itemList
+        on error
+            return {}
+        end try
     end tell
-end run
+end tell
 EOF
 )
-
-        APP=$(osascript -e 'tell application "System Events" to name of first application process whose frontmost is true' 2>/dev/null)
-
+        
         i=2
         echo "$ITEMS" | tr ',' '\n' | while read -r item; do
             item=$(echo "$item" | xargs)
