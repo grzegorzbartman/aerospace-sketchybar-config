@@ -61,32 +61,9 @@ if [ -f "$THEME_DIR/sketchybar.colors" ]; then
   source "$THEME_DIR/sketchybar.colors"
 fi
 
-# Get list of apps in this workspace
-apps=""
-focused_workspace=$(aerospace list-workspaces --focused 2>/dev/null)
-
-# Try alternative method to get focused workspace
-focused_workspace_alt=$(aerospace get active-space 2>/dev/null)
-
-# Debug logging removed for production
-
-# Check if this workspace is focused (handle various formats)
-# Remove any whitespace and compare
-focused_workspace_clean=$(echo "$focused_workspace" | tr -d '[:space:]')
-workspace_clean=$(echo "$WORKSPACE" | tr -d '[:space:]')
-
-# Try multiple comparison methods
-# Also check if workspace is in the list of active workspaces
-active_workspaces=$(aerospace list-workspaces --all 2>/dev/null)
-is_active=$(echo "$active_workspaces" | grep -q "^$WORKSPACE$" && echo "true" || echo "false")
-
-if [[ "$focused_workspace_clean" == "$workspace_clean" ]] || \
-   [[ "$focused_workspace_clean" -eq "$workspace_clean" ]] || \
-   [[ "$focused_workspace" == "$WORKSPACE" ]] || \
-   [[ "$focused_workspace" -eq "$WORKSPACE" ]] || \
-   [[ "$focused_workspace_alt" == "$WORKSPACE" ]] || \
-   [[ "$focused_workspace_alt" -eq "$WORKSPACE" ]] || \
-   [[ "$is_active" == "true" && "$focused_workspace" == "$WORKSPACE" ]]; then
+# Get focused workspace from environment variable (set by aerospace exec-on-workspace-change)
+# This is more reliable than querying aerospace, especially for empty workspaces
+if [[ "$FOCUSED_WORKSPACE" == "$WORKSPACE" ]]; then
 # Focused workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
