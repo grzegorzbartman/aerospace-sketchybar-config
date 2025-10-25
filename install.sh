@@ -38,9 +38,19 @@ bash "$MAKARON_PATH/install/all.sh"
 
 # Add bin directory to PATH
 echo "Setting up PATH..."
-# Remove old PATH entries first
-sed -i '' '/makaron\/bin/d' "$HOME/.zshrc" 2>/dev/null || true
-sed -i '' '/makaron\/bin/d' "$HOME/.bashrc" 2>/dev/null || true
+
+# Ensure shell config files exist
+touch "$HOME/.zshrc" 2>/dev/null || true
+touch "$HOME/.bashrc" 2>/dev/null || true
+
+# Remove old PATH entries first (more robust approach)
+if [ -f "$HOME/.zshrc" ]; then
+    grep -v 'makaron/bin' "$HOME/.zshrc" > "$HOME/.zshrc.tmp" 2>/dev/null && mv "$HOME/.zshrc.tmp" "$HOME/.zshrc" || true
+fi
+
+if [ -f "$HOME/.bashrc" ]; then
+    grep -v 'makaron/bin' "$HOME/.bashrc" > "$HOME/.bashrc.tmp" 2>/dev/null && mv "$HOME/.bashrc.tmp" "$HOME/.bashrc" || true
+fi
 
 # Add new PATH entry
 echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.zshrc"
@@ -51,7 +61,18 @@ export PATH="$HOME/.local/share/makaron/bin:$PATH"
 
 # Set execute permissions on bin files
 echo "Setting execute permissions on bin files..."
-chmod +x "$MAKARON_PATH/bin"/* 2>/dev/null || true
+if [ -d "$MAKARON_PATH/bin" ]; then
+    chmod +x "$MAKARON_PATH/bin"/* 2>/dev/null || true
+else
+    echo "Warning: $MAKARON_PATH/bin directory not found!"
+fi
+
+# Verify PATH was added
+if grep -q 'makaron/bin' "$HOME/.zshrc" 2>/dev/null; then
+    echo "✓ PATH successfully added to .zshrc"
+else
+    echo "✗ Failed to add PATH to .zshrc"
+fi
 
 echo "Added $MAKARON_PATH/bin to PATH in shell config files"
 
