@@ -11,6 +11,12 @@ start-at-login = true
 # Border colors are loaded from theme file via makaron-reload-aerospace-sketchybar
 after-startup-command = []
 
+# Trigger SketchyBar when workspace changes
+# This passes the focused workspace number to SketchyBar plugins
+exec-on-workspace-change = ['/bin/bash', '-c',
+    'sketchybar --trigger aerospace_workspace_change FOCUSED_WORKSPACE=$AEROSPACE_FOCUSED_WORKSPACE'
+]
+
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
 enable-normalization-flatten-containers = true
 enable-normalization-opposite-orientation-for-nested-containers = true
