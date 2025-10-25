@@ -54,6 +54,21 @@ default=(
 )
 sketchybar --default "${default[@]}"
 
+##### Adding App Menu #####
+# Clickable menu bar for front application
+
+sketchybar --add item app_menu left \
+  --set app_menu \
+  icon= \
+  icon.color=$ICON_COLOR \
+  label.drawing=off \
+  popup.background.color=$BAR_BACKGROUND_COLOR \
+  popup.background.corner_radius=10 \
+  popup.background.border_width=2 \
+  popup.background.border_color=$SPACE_BORDER_COLOR \
+  click_script="$PLUGIN_DIR/app_menu/menu_loader.sh toggle" \
+  --subscribe app_menu front_app_switched
+
 ##### Adding AeroSpace Workspace Indicators #####
 # Integration with AeroSpace window manager
 # https://nikitabobko.github.io/AeroSpace/goodness#show-aerospace-workspaces-in-sketchybar
