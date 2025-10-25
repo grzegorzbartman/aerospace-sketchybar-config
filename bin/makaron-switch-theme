@@ -29,6 +29,18 @@ echo "Switching to theme: $THEME_NAME"
 rm -f "$CURRENT_THEME_LINK"
 ln -s "$THEME_DIR" "$CURRENT_THEME_LINK"
 
+# Set macOS appearance mode based on theme
+if [ -f "$THEME_DIR/mode" ]; then
+    MODE=$(cat "$THEME_DIR/mode")
+    if [ "$MODE" = "dark" ]; then
+        echo "Setting macOS appearance to Dark Mode..."
+        defaults write -g AppleInterfaceStyle Dark
+    elif [ "$MODE" = "light" ]; then
+        echo "Setting macOS appearance to Light Mode..."
+        defaults delete -g AppleInterfaceStyle 2>/dev/null || true
+    fi
+fi
+
 # Set wallpaper if backgrounds directory exists
 if [ -d "$THEME_DIR/backgrounds" ]; then
     # Use the first image file found in backgrounds/
