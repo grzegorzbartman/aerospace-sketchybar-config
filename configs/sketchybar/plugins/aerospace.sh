@@ -62,7 +62,11 @@ if [ -f "$THEME_DIR/sketchybar.colors" ]; then
 fi
 
 # Get focused workspace from environment variable (set by aerospace exec-on-workspace-change)
-# This is more reliable than querying aerospace, especially for empty workspaces
+# If not set (e.g., from front_app_switched event), query aerospace
+if [[ -z "$FOCUSED_WORKSPACE" ]]; then
+  FOCUSED_WORKSPACE=$(aerospace list-workspaces --focused 2>/dev/null)
+fi
+
 if [[ "$FOCUSED_WORKSPACE" == "$WORKSPACE" ]]; then
 # Focused workspace - theme colors
 sketchybar --set "$NAME" \
