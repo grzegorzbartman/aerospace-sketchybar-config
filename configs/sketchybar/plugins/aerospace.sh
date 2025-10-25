@@ -64,7 +64,13 @@ fi
 # Get list of apps in this workspace
 apps=""
 focused_workspace=$(aerospace list-workspaces --focused 2>/dev/null)
-if [[ "$focused_workspace" == "$WORKSPACE" ]]; then
+
+# Check if this workspace is focused (handle various formats)
+# Remove any whitespace and compare
+focused_workspace_clean=$(echo "$focused_workspace" | tr -d '[:space:]')
+workspace_clean=$(echo "$WORKSPACE" | tr -d '[:space:]')
+
+if [[ "$focused_workspace_clean" == "$workspace_clean" ]] || [[ "$focused_workspace_clean" -eq "$workspace_clean" ]]; then
 # Focused workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
