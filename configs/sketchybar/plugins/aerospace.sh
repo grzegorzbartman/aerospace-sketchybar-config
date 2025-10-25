@@ -68,8 +68,7 @@ focused_workspace=$(aerospace list-workspaces --focused 2>/dev/null)
 # Try alternative method to get focused workspace
 focused_workspace_alt=$(aerospace get active-space 2>/dev/null)
 
-# Debug: Check what aerospace actually returns
-echo "DEBUG: WORKSPACE=$WORKSPACE, FOCUSED=$focused_workspace, ALT=$focused_workspace_alt" >> /tmp/aerospace_debug.log
+# Debug logging removed for production
 
 # Check if this workspace is focused (handle various formats)
 # Remove any whitespace and compare
