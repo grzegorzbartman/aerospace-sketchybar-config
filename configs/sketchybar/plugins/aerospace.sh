@@ -103,5 +103,6 @@ done <<< "$windows"
     if [[ -n "$icons" ]]; then
     sketchybar --set "$NAME" label="$icons" label.drawing=on
     else
-    sketchybar --set "$NAME" label="" label.drawing=off
+    # Show workspace number even when empty
+    sketchybar --set "$NAME" label="$WORKSPACE" label.drawing=on
     fi
