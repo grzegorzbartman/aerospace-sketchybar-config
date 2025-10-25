@@ -5,6 +5,7 @@ source "$MAKARON_PATH/install/ui/fonts.sh"
 source "$MAKARON_PATH/install/ui/borders.sh"
 source "$MAKARON_PATH/install/ui/aerospace.sh"
 source "$MAKARON_PATH/install/ui/sketchybar.sh"
+source "$MAKARON_PATH/install/ui/swipeaerospace.sh"
 
 # Initialize default theme (tokyo-night)
 echo "Setting up default theme (Tokyo Night)..."

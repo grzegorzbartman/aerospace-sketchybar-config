@@ -64,7 +64,7 @@ git pull
 After installation, you'll have access to these commands:
 
 - **`makaron-update`** - Update configuration to latest version
-- **`makaron-reload-aerospace-sketchybar`** - Reload all configurations
+- **`makaron-reload-aerospace-sketchybar`** - Reload all configurations (AeroSpace, SketchyBar, SwipeAeroSpace)
 - **`makaron-reinstall`** - Complete reinstall from scratch
 - **`makaron-migrate`** - Run pending migrations
 - **`makaron-migration-status`** - Show migration status
@@ -209,6 +209,7 @@ pgrep -x "sketchybar" || brew services restart sketchybar
 **Workspaces:**
 - `Alt+1-9/0` - Switch to workspace 1-10
 - `Alt+Shift+1-9/0` - Move window to workspace 1-10
+- `Three-finger swipe` - Swipe left/right to switch workspaces
 
 **Quick Apps:**
 - `Ctrl+Alt+B` - Safari
@@ -221,6 +222,7 @@ pgrep -x "sketchybar" || brew services restart sketchybar
 This development environment includes:
 
 - **AeroSpace** - Modern tiling window manager for efficient coding workflow
+- **SwipeAeroSpace** - 3-finger swipe gestures for workspace switching
 - **SketchyBar** - Clean status bar with system information and development metrics
 - **Ghostty** - Fast terminal emulator optimized for development
 - **Borders** - Visual window borders for better focus
