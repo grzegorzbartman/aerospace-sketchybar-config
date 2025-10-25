@@ -7,48 +7,48 @@ WORKSPACE=$1
 # Map app names to icons (using Nerd Font icons)
 get_app_icon() {
 case "$1" in
-"kitty"|"Alacritty"|"iTerm2"|"Terminal"|"WezTerm"|"Ghostty") echo " " ;;
-"Safari"|"safari") echo "" ;;
-"Google Chrome"|"Chrome"|"Chromium") echo "" ;;
+"kitty"|"Alacritty"|"iTerm2"|"Terminal"|"WezTerm"|"Ghostty") echo "" ;;
+"Safari"|"safari") echo "󰀹" ;;
+"Google Chrome"|"Chrome"|"Chromium") echo "" ;;
 "Firefox"|"Firefox Developer Edition") echo "" ;;
 "Arc") echo "" ;;
-"Brave Browser") echo "" ;;
-"Code"|"Visual Studio Code"|"VSCodium") echo "" ;;
-"Cursor") echo "" ;;
-"Finder") echo "" ;;
-"Mail"|"Mimestream") echo "" ;;
-"Calendar"|"Fantastical") echo "" ;;
-"Home") echo "" ;;
-"Messages") echo "" ;;
-"Slack") echo "" ;;
-"Discord") echo "" ;;
+"Brave Browser") echo "󰖟" ;;
+"Code"|"Visual Studio Code"|"VSCodium") echo "󰨞" ;;
+"Cursor") echo "󰨞" ;;
+"Finder") echo "" ;;
+"Mail"|"Mimestream") echo "" ;;
+"Calendar"|"Fantastical") echo "" ;;
+"Home") echo "󱉑" ;;
+"Messages") echo "󰍦" ;;
+"Slack") echo "" ;;
+"Discord") echo "󰙯" ;;
 "Telegram") echo "" ;;
-"WhatsApp") echo "" ;;
-"Spotify"|"Music") echo "" ;;
-"Notes") echo "" ;;
-"Todoist") echo "" ;;
-"Obsidian") echo "" ;;
-"Notion") echo "" ;;
-"Preview") echo "" ;;
+"WhatsApp") echo "" ;;
+"Spotify"|"Music") echo "" ;;
+"Notes") echo "" ;;
+"Todoist") echo "" ;;
+"Obsidian") echo "󱓷" ;;
+"Notion") echo "󰈚" ;;
+"Preview") echo "󰋩" ;;
 "Photoshop") echo "" ;;
 "Illustrator") echo "" ;;
 "Figma") echo "" ;;
 "IntelliJ IDEA"|"IntelliJ IDEA CE") echo "" ;;
-"PHPStorm") echo "" ;;
+"PHPStorm") echo "" ;;
 "PyCharm"|"PyCharm CE") echo "" ;;
 "WebStorm") echo "" ;;
 "Android Studio") echo "" ;;
 "Xcode") echo "" ;;
 "Docker"|"Docker Desktop") echo "" ;;
-"Postman") echo "" ;;
+"Postman") echo "󰘯" ;;
 "TablePlus"|"Sequel Pro"|"DBeaver") echo "" ;;
-"VLC") echo "" ;;
-"IINA") echo "" ;;
-"Zoom"|"zoom.us") echo "" ;;
-"Microsoft Teams") echo "" ;;
-"System Settings"|"System Preferences") echo "" ;;
+"VLC") echo "󰕼" ;;
+"IINA") echo "󰕼" ;;
+"Zoom"|"zoom.us") echo "󰍩" ;;
+"Microsoft Teams") echo "󰊻" ;;
+"System Settings"|"System Preferences") echo "" ;;
 "App Store") echo "" ;;
-"TV") echo "" ;;
+"TV") echo "" ;;
 "Activity Monitor") echo "" ;;
 *) echo "" ;; # Default icon for unknown apps
 esac
@@ -61,11 +61,32 @@ if [ -f "$THEME_DIR/sketchybar.colors" ]; then
   source "$THEME_DIR/sketchybar.colors"
 fi
 
-# Simple approach: check if this workspace is currently focused
-current_workspace=$(aerospace list-workspaces --focused 2>/dev/null | tr -d '[:space:]')
-this_workspace=$(echo "$WORKSPACE" | tr -d '[:space:]')
+# Get list of apps in this workspace
+apps=""
+focused_workspace=$(aerospace list-workspaces --focused 2>/dev/null)
 
-if [[ "$current_workspace" == "$this_workspace" ]]; then
+# Try alternative method to get focused workspace
+focused_workspace_alt=$(aerospace get active-space 2>/dev/null)
+
+# Debug logging removed for production
+
+# Check if this workspace is focused (handle various formats)
+# Remove any whitespace and compare
+focused_workspace_clean=$(echo "$focused_workspace" | tr -d '[:space:]')
+workspace_clean=$(echo "$WORKSPACE" | tr -d '[:space:]')
+
+# Try multiple comparison methods
+# Also check if workspace is in the list of active workspaces
+active_workspaces=$(aerospace list-workspaces --all 2>/dev/null)
+is_active=$(echo "$active_workspaces" | grep -q "^$WORKSPACE$" && echo "true" || echo "false")
+
+if [[ "$focused_workspace_clean" == "$workspace_clean" ]] || \
+   [[ "$focused_workspace_clean" -eq "$workspace_clean" ]] || \
+   [[ "$focused_workspace" == "$WORKSPACE" ]] || \
+   [[ "$focused_workspace" -eq "$WORKSPACE" ]] || \
+   [[ "$focused_workspace_alt" == "$WORKSPACE" ]] || \
+   [[ "$focused_workspace_alt" -eq "$WORKSPACE" ]] || \
+   [[ "$is_active" == "true" && "$focused_workspace" == "$WORKSPACE" ]]; then
 # Focused workspace - theme colors
 sketchybar --set "$NAME" \
   background.drawing=on \
@@ -101,10 +122,10 @@ fi
 fi
 done <<< "$windows"
 
-# Update the label with app icons
-if [[ -n "$icons" ]]; then
-sketchybar --set "$NAME" label="$icons" label.drawing=on
-else
-# Show workspace number when empty instead of hiding completely
-sketchybar --set "$NAME" label="$WORKSPACE" label.drawing=on
-fi
+    # Update the label with app icons
+    if [[ -n "$icons" ]]; then
+    sketchybar --set "$NAME" label="$icons" label.drawing=on
+    else
+    # Hide label when workspace is empty but keep workspace visible
+    sketchybar --set "$NAME" label="" label.drawing=off
+    fi

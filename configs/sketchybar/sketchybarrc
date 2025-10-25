@@ -75,7 +75,7 @@ for sid in $(aerospace list-workspaces --all); do
     background.color=$SPACE_BACKGROUND_COLOR \
     background.corner_radius=8 \
     background.height=28 \
-    background.drawing=off \
+    background.drawing=on \
     background.border_color=$SPACE_BORDER_COLOR \
     background.border_width=0 \
     script="$PLUGIN_DIR/aerospace.sh $sid" \
