@@ -98,6 +98,7 @@ configure_library_visibility() {
 # Dock settings
 configure_dock() {
     echo "Configuring Dock settings..."
+    defaults write com.apple.dock autohide -bool true
     defaults write com.apple.Dock autohide-delay -float 0
     defaults write com.apple.dock autohide-time-modifier -float 0
     defaults write com.apple.dock expose-animation-duration -float 0.1
@@ -109,6 +110,20 @@ configure_dock() {
     # Enable Mission Control grouping by application (AeroSpace fix)
     defaults write com.apple.dock expose-group-apps -bool true
     echo "Dock preferences configured"
+}
+
+# Menu bar autohide
+configure_menubar() {
+    echo "Configuring menu bar to autohide..."
+    defaults write NSGlobalDomain _HIHideMenuBar -bool true
+    echo "Menu bar autohide configured"
+}
+
+# Accessibility - Reduce transparency
+configure_accessibility() {
+    echo "Configuring accessibility settings..."
+    defaults write com.apple.universalaccess reduceTransparency -bool true
+    echo "Accessibility settings configured"
 }
 
 # iCloud default save
@@ -171,6 +186,8 @@ configure_screenshots
 configure_ds_store
 configure_library_visibility
 configure_dock
+configure_menubar
+configure_accessibility
 configure_icloud
 configure_apple_intelligence
 configure_wallpaper
