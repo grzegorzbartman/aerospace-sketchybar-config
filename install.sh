@@ -43,18 +43,25 @@ echo "Setting up PATH..."
 touch "$HOME/.zshrc" 2>/dev/null || true
 touch "$HOME/.bashrc" 2>/dev/null || true
 
-# Remove old PATH entries first (more robust approach)
-if [ -f "$HOME/.zshrc" ]; then
-    grep -v 'makaron/bin' "$HOME/.zshrc" > "$HOME/.zshrc.tmp" 2>/dev/null && mv "$HOME/.zshrc.tmp" "$HOME/.zshrc" || true
-fi
+# Function to safely add PATH to config file
+add_path_to_config() {
+    local config_file="$1"
+    local path_line='export PATH="$HOME/.local/share/makaron/bin:$PATH"'
 
-if [ -f "$HOME/.bashrc" ]; then
-    grep -v 'makaron/bin' "$HOME/.bashrc" > "$HOME/.bashrc.tmp" 2>/dev/null && mv "$HOME/.bashrc.tmp" "$HOME/.bashrc" || true
-fi
+    # Remove old entries if they exist
+    if [ -f "$config_file" ] && grep -q 'makaron/bin' "$config_file" 2>/dev/null; then
+        sed -i.bak '/makaron\/bin/d' "$config_file" 2>/dev/null || {
+            grep -v 'makaron/bin' "$config_file" > "${config_file}.tmp" && mv "${config_file}.tmp" "$config_file"
+        }
+    fi
 
-# Add new PATH entry
-echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.zshrc"
-echo 'export PATH="$HOME/.local/share/makaron/bin:$PATH"' >> "$HOME/.bashrc"
+    # Add new entry
+    echo "$path_line" >> "$config_file"
+}
+
+# Add to shell configs
+add_path_to_config "$HOME/.zshrc"
+add_path_to_config "$HOME/.bashrc"
 
 # Add to current session
 export PATH="$HOME/.local/share/makaron/bin:$PATH"
