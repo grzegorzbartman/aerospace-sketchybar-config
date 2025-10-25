@@ -5,6 +5,9 @@
 
 echo "Running migration: Install SwipeAeroSpace"
 
+# Set MAKARON_PATH if not already set
+MAKARON_PATH="${MAKARON_PATH:-$HOME/.local/share/makaron}"
+
 # Check if SwipeAeroSpace is already installed (idempotent)
 if brew list --cask mediosz/tap/swipeaerospace &> /dev/null; then
     echo "SwipeAeroSpace already installed, skipping"
