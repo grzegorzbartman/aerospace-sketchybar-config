@@ -59,9 +59,9 @@ sketchybar --default "${default[@]}"
 
 sketchybar --add item app_menu left \
   --set app_menu \
-  icon= \
-  icon.color=$ICON_COLOR \
-  label.drawing=off \
+  icon.drawing=off \
+  label="MENU" \
+  label.color=$ICON_COLOR \
   popup.background.color=$BAR_BACKGROUND_COLOR \
   popup.background.corner_radius=10 \
   popup.background.border_width=2 \
