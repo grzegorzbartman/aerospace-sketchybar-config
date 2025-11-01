@@ -3,5 +3,5 @@
 
 export ACTIVE_BORDER_COLOR=0xffdcd7ba
 export INACTIVE_BORDER_COLOR=0xff090618
-export BORDER_WIDTH=2.0
+export BORDER_WIDTH=5.0
 
