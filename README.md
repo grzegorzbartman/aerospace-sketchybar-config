@@ -76,18 +76,16 @@ cd makaron
 
 ## Updates
 
-To update your installation, simply run the install command again:
+To update your installation to the latest version:
 
 ```bash
-curl -sL https://raw.githubusercontent.com/grzegorzbartman/makaron/main/install.sh | bash
+makaron-update
 ```
 
-Or manually update:
-
-```bash
-cd ~/.local/share/makaron
-git pull
-```
+This command will:
+- Pull the latest changes from GitHub
+- Run any pending migrations
+- Reload all configurations
 
 ## Usage
 
