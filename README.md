@@ -118,9 +118,14 @@ After installation, you'll have access to these commands:
 Makaron includes twelve beautiful themes that change the colors of your UI and wallpaper (based on [Omarchy](https://github.com/basecamp/omarchy)):
 
 <p align="center">
-  <img src="docs/makaron-02.png" alt="Catppuccin Latte" width="32%" />
+  <img src="docs/makaron-02.png" alt="Catppuccin Latte" width="49%" />
+  <img src="docs/makaron-05.png" alt="Flexoki Light" width="49%" />
+</p>
+
+<p align="center">
   <img src="docs/makaron-03.png" alt="Matte Black" width="32%" />
   <img src="docs/makaron-04.png" alt="Everforest" width="32%" />
+  <img src="docs/makaron-01.png" alt="Tokyo Night" width="32%" />
 </p>
 
 1. **Tokyo Night** (default) - Dark theme with purple/blue accents
