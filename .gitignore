@@ -10,3 +10,4 @@
 .env.test
 .env.production
 tmp
+.playwright-mcp/
