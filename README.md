@@ -1,5 +1,7 @@
 # Makaron - macOS Developer Configuration
 
+![Makaron Screenshot](docs/makaron-01.png)
+
 Complete macOS development environment for PHP and Drupal developers with modern window management, terminal, and productivity tools.
 
 ## Perfect for
@@ -85,7 +87,13 @@ After installation, you'll have access to these commands:
 
 ### Themes
 
-Makaron includes twelve beautiful themes that change the colors of your UI and wallpaper:
+Makaron includes twelve beautiful themes that change the colors of your UI and wallpaper (based on [Omarchy](https://github.com/basecamp/omarchy)):
+
+<p align="center">
+  <img src="docs/makaron-02.png" alt="Catppuccin Latte" width="32%" />
+  <img src="docs/makaron-03.png" alt="Matte Black" width="32%" />
+  <img src="docs/makaron-04.png" alt="Everforest" width="32%" />
+</p>
 
 1. **Tokyo Night** (default) - Dark theme with purple/blue accents
 2. **Catppuccin Mocha** - Dark theme with pastel colors
