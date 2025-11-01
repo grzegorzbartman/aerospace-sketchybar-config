@@ -2,6 +2,8 @@
 
 ![Makaron Screenshot](docs/makaron-01.png)
 
+> **Why "Makaron"?** The name comes from the Polish word for "pasta" 🍝, which sounds similar to "Mac" at the beginning - a playful nod to macOS while keeping a Polish identity.
+
 Complete macOS development environment for PHP and Drupal developers with modern window management, terminal, and productivity tools.
 
 ## Perfect for
@@ -32,6 +34,34 @@ This will:
 - Set up modern development environment (AeroSpace, SketchyBar, Ghostty)
 - Configure system settings for optimal development workflow
 - Install developer fonts and tools
+
+## What Gets Installed
+
+### UI & Window Management
+- **AeroSpace** - Modern tiling window manager
+- **SketchyBar** - Custom status bar
+- **Borders** - Visual window borders
+- **SwipeAeroSpace** - 3-finger swipe gestures for workspace switching
+- **Nerd Fonts** - Developer-friendly fonts with icon support
+
+### Development Tools
+- **Cursor** - AI-powered code editor
+- **Docker Desktop** - Container platform
+- **DDEV** - Local PHP development environment
+- **PhpStorm** - Professional PHP IDE
+- **Sequel Ace** - MySQL/MariaDB database management
+- **VSCode** - Popular code editor
+- **Composer** - PHP dependency manager
+
+### Productivity Tools
+- **Ghostty** - Fast, modern terminal emulator
+- **Alt-Tab** - Windows-style alt-tab for macOS
+- **Slack** - Team communication
+- **Stats** - System monitor in menu bar
+
+### System Configuration
+- **macOS Settings** - Optimized system preferences for development workflow
+- **Migration System** - Safe, incremental configuration updates
 
 ## Manual Installation
 
@@ -225,17 +255,19 @@ pgrep -x "sketchybar" || brew services restart sketchybar
 - `Ctrl+Alt+T` - iTerm
 - `Ctrl+Alt+P` - PhpStorm
 
-## Components
+## Modular Installation
 
-This development environment includes:
+All installation scripts are modular and organized in the `install/` directory:
 
-- **AeroSpace** - Modern tiling window manager for efficient coding workflow
-- **SwipeAeroSpace** - 3-finger swipe gestures for workspace switching
-- **SketchyBar** - Clean status bar with system information and development metrics
-- **Ghostty** - Fast terminal emulator optimized for development
-- **Borders** - Visual window borders for better focus
-- **Nerd Fonts** - Developer-friendly fonts with icon support
-- **macOS Settings** - Optimized system configuration for development
+```
+install/
+├── ui/           # Window manager, status bar, fonts
+├── development/  # IDEs, Docker, DDEV
+├── tools/        # Terminal, utilities
+└── macos_settings.sh
+```
+
+You can customize your installation by modifying which scripts run in `install/all.sh`, or run individual installation scripts directly.
 
 ## Files
 
@@ -290,3 +322,16 @@ Run pending migrations manually:
 ```bash
 makaron-migrate
 ```
+
+---
+
+## ⚠️ Experimental Project
+
+**Please note:** Makaron is an experimental project under active development. Some features may not work perfectly yet, and you might encounter bugs or unexpected behavior. We welcome feedback and contributions to help improve the project!
+
+If you encounter any issues, please:
+- Check existing [GitHub Issues](https://github.com/grzegorzbartman/makaron/issues)
+- Try running `makaron-reinstall` for a clean setup
+- Report new issues with details about your system and the problem
+
+Your patience and feedback are appreciated as we continue to improve Makaron! 🙏
